@@ -39,7 +39,7 @@ const TabLayout = () => {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            height: 100,
+            height: 80,
             borderRadius: 20,
           },
         }}
@@ -75,16 +75,16 @@ const TabLayout = () => {
           }}
         />
         <Tabs.Screen
-          name='cart'
+          name='myCourses'
           options={{
-            title: 'cart',
+            title: 'myCourses',
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                icon={icons.cart}
+                icon={icons.myCourses}
                 color={color}
                 focused={focused}
-                name='Cart'
+                name='My Course'
               />
             ),
           }}
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     gap: 2,
     borderRadius: 10,
     height: 50,
-    width: 60,
+    width: 80,
     marginTop: 15,
   },
   Focused: {
