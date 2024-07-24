@@ -3,7 +3,6 @@ import {
   Animated,
   Image,
   ImageSourcePropType,
-  NativeEventEmitter,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -110,6 +109,8 @@ const DisplayFaculty = ({
 const Team = () => {
   const [faculties, setFaculties] = useState<Person[]>(dummyFaculty)
   const [activeCity, setActiveCity] = useState<string>('Kolkata')
+  const [isVisible, setIsVisible] = useState<boolean>(true)
+  const [lastPageTop, setLastPageTop] = useState<number>(0)
 
   useEffect(() => {
     if (activeCity === 'Kolkata') {
@@ -119,9 +120,21 @@ const Team = () => {
     }
   }, [activeCity])
 
+  const handleScroll = (e: any) => {
+    const top = e.nativeEvent.contentOffset.y
+
+    if (top > lastPageTop) {
+      setIsVisible(false)
+    } else {
+      setIsVisible(true)
+    }
+
+    setLastPageTop(top)
+  }
+
   return (
-    <View>
-      <Animated.View style={styles.row}>
+    <View style={[styles.containter , !isVisible && styles.removePadding ]}>
+      <Animated.View style={[styles.row,!isVisible && styles.hidden]}>
         <Pressable
           onPress={() => setActiveCity('Kolkata')}
           style={[
@@ -155,7 +168,8 @@ const Team = () => {
           </Text>
         </Pressable>
       </Animated.View>
-      <ScrollView style={styles.containter}>
+
+      <ScrollView onScroll={handleScroll} scrollEventThrottle={1000}>
         <DisplayFaculty faculties={faculties} header={'Faculty'} />
         <DisplayFaculty
           faculties={faculties}
@@ -169,11 +183,13 @@ const Team = () => {
 const styles = StyleSheet.create({
   containter: {
     backgroundColor: 'white',
+    paddingBottom: 80,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    paddingHorizontal:25,
   },
   facultyContainer: {
     width: '45%',
@@ -181,7 +197,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 200,
-    height: 200,
+    height: 160,
   },
   name: {
     fontSize: 16,
@@ -193,20 +209,25 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingLeft: 20,
-    paddingTop: 20,
+    paddingVertical: 20,
     fontSize: 20,
     fontWeight: 'bold',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 10,
     backgroundColor: 'white',
+    marginHorizontal: 19,
+    marginTop: 20,
+
+    borderColor: 'rgba(0, 0, 0, 0.2)',
+    borderWidth: 2,
+    borderRadius: 30,
   },
   button: {
-    paddingVertical: 20,
-    paddingHorizontal: 40,
-    borderRadius: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    borderRadius: 30,
     backgroundColor: 'white',
   },
   activeButton: {
@@ -220,6 +241,12 @@ const styles = StyleSheet.create({
   activeButtonText: {
     color: 'white',
   },
+  hidden:{
+    display:'none',
+  },
+  removePadding:{
+    paddingBottom:30,
+  }
 })
 
 export default Team
