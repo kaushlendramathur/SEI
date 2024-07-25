@@ -122,19 +122,30 @@ const Team = () => {
 
   const handleScroll = (e: any) => {
     const top = e.nativeEvent.contentOffset.y
-
-    if (top > lastPageTop) {
+    console.log(top)
+    if (top <= 0) {
+      setLastPageTop(top)
+      setIsVisible(true)
+    } else if (top >= 1000) {
+      setLastPageTop(top)
       setIsVisible(false)
     } else {
-      setIsVisible(true)
-    }
+      const timeoutId = setTimeout(() => {
+        if (top > lastPageTop) {
+          setIsVisible(false)
+        } else {
+          setIsVisible(true)
+        }
+        setLastPageTop(top)
+      }, 200)
 
-    setLastPageTop(top)
+      return () => clearTimeout(timeoutId)
+    }
   }
 
   return (
-    <View style={[styles.containter , !isVisible && styles.removePadding ]}>
-      <Animated.View style={[styles.row,!isVisible && styles.hidden]}>
+    <View style={[styles.containter, !isVisible && styles.removePadding]}>
+      <Animated.View style={[styles.row, !isVisible && styles.hidden]}>
         <Pressable
           onPress={() => setActiveCity('Kolkata')}
           style={[
@@ -169,7 +180,7 @@ const Team = () => {
         </Pressable>
       </Animated.View>
 
-      <ScrollView onScroll={handleScroll} scrollEventThrottle={1000}>
+      <ScrollView onScroll={handleScroll}>
         <DisplayFaculty faculties={faculties} header={'Faculty'} />
         <DisplayFaculty
           faculties={faculties}
@@ -189,7 +200,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    paddingHorizontal:25,
+    paddingHorizontal: 25,
   },
   facultyContainer: {
     width: '45%',
@@ -241,12 +252,12 @@ const styles = StyleSheet.create({
   activeButtonText: {
     color: 'white',
   },
-  hidden:{
-    display:'none',
+  hidden: {
+    display: 'none',
   },
-  removePadding:{
-    paddingBottom:30,
-  }
+  removePadding: {
+    paddingBottom: 30,
+  },
 })
 
 export default Team
