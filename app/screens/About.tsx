@@ -1,13 +1,14 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { NavigationProp } from './interfaces';
 
 const About: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <View>
       <Text>About</Text>
-      <Button title="Go to Profile" onPress={() => navigate('Profile')} />
-      <Button title="Go to Centers" onPress={() => navigate('Centers')} />
+      <TouchableOpacity onPress={() => navigate('Profile')}>
+        <Text>Go to Profile</Text>
+      </TouchableOpacity>
     </View>
   );
 };

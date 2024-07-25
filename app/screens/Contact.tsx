@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { NavigationProp } from './interfaces';
 
-const Gallery: React.FC<NavigationProp> = ({ navigate }) => {
+const Contact: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <View>
-      <Text>Gallery</Text>
+      <Text>Contact</Text>
       <TouchableOpacity onPress={() => navigate('Profile')}>
         <Text>Go to Profile</Text>
       </TouchableOpacity>
@@ -13,4 +13,4 @@ const Gallery: React.FC<NavigationProp> = ({ navigate }) => {
   );
 };
 
-export default Gallery;
+export default Contact;
