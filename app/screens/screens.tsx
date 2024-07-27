@@ -6,7 +6,7 @@ import Career from './Career';
 import Contact from './Contact';
 import Terms from './Terms';
 import Refund from './Refund';
-import Privacy from './Pravacy';
+import Privacy from './Privacy';
 import Logout from './Logout';
 
 const screens = {
