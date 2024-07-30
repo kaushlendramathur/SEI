@@ -8,6 +8,7 @@ import Terms from './Terms';
 import Refund from './Refund';
 import Privacy from './Privacy';
 import Logout from './Logout';
+import { ScreenNames } from './interfaces';
 
 const screens = {
   Profile,
@@ -22,6 +23,6 @@ const screens = {
   Logout
 };
 
-export type ScreenNames = keyof typeof screens;
+export {ScreenNames};
 
 export default screens;
