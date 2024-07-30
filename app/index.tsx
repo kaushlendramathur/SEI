@@ -11,44 +11,76 @@ import {
 } from 'react-native'
 
 import BackgroundImage from '../assets/images/mainpage.png'
+import ClippedRectangle from '../assets/images/mainpage2.png'
 
 const { width, height } = Dimensions.get('window')
 
 export default function App() {
+  // return (
+  //   <View style={styles.container}>
+  //     <View style={styles.textContainer}>
+  //       <StatusBar style='auto' />
+  //       <Text style={styles.header}>SEI EDUCATIONAL TRUST</Text>
+  //       <Text style={styles.subHeader}>
+  //         Approved by D.G.Shipping, Govt. of India
+  //       </Text>
+  //       <Text style={styles.subHeader}>
+  //         MTI No:303014(Kolkata) | MTI No:103011(Faridabad)
+  //       </Text>
+  //       <Link href='/home' style={{ color: 'purple' }}>
+  //         Go MainPage
+  //       </Link>
+  //     </View>
+  //     <ImageBackground
+  //       source={BackgroundImage as ImageSourcePropType}
+  //       style={styles.backgroundImage}
+  //       imageStyle={styles.imageStyle}
+  //     >
+       
+  //     </ImageBackground>
+  //   </View>
+  // )
   return (
-    <View style={styles.container}>
-      <View style={styles.textContainer}>
-        <StatusBar style='auto' />
-        <Text style={styles.header}>SEI EDUCATIONAL TRUST</Text>
-        <Text style={styles.subHeader}>
-          Approved by D.G.Shipping, Govt. of India
-        </Text>
-        <Text style={styles.subHeader}>
-          MTI No:303014(Kolkata) | MTI No:103011(Faridabad)
-        </Text>
-        <Link href='/home' style={{ color: 'purple' }}>
-          Go MainPage
-        </Link>
-      </View>
-      <ImageBackground
-        source={BackgroundImage as ImageSourcePropType}
-        style={styles.backgroundImage}
-        imageStyle={styles.imageStyle}
-      >
-        <Text
-          style={styles.header2}
-        >{`The Best App \n for the Marine \n Courses`}</Text>
-        <Pressable
-          style={styles.button}
-          onPress={() => router.push('/login')}
+    <ImageBackground
+      source={BackgroundImage as ImageSourcePropType}
+      style={styles.backgroundImage}
+      imageStyle={styles.imageStyle}
+    >
+      <View>
+        <ImageBackground
+          source={ClippedRectangle as ImageSourcePropType}
+          imageStyle={styles.imageStyle}
+          style={styles.clippedRectangle}
         >
-          <Text style={styles.buttonText}>Sign In</Text>
-        </Pressable>
-        <Link href='/register' style={styles.signUp}>
-          Create An Account
-        </Link>
-      </ImageBackground>
-    </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.header}>SEI EDUCATIONAL TRUST</Text>
+            <Text style={styles.subHeader}>
+              Approved by D.G.Shipping, Govt. of India
+            </Text>
+            <Text style={styles.subHeader}>
+              MTI No:303014(Kolkata) | MTI No:103011(Faridabad)
+            </Text>
+            <Link href='/home' style={{ color: 'purple' }}>
+              Go MainPage
+            </Link>
+          </View>
+          <View>
+            <Text
+              style={styles.header2}
+            >{`The Best App \n for the Marine \n Courses`}</Text>
+            <Pressable
+              style={styles.button}
+              onPress={() => router.push('/login')}
+            >
+              <Text style={styles.buttonText}>Sign In</Text>
+            </Pressable>
+            <Link href='/register' style={styles.signUp}>
+              Create An Account
+            </Link>
+          </View>
+        </ImageBackground>
+      </View>
+    </ImageBackground>
   )
 }
 
@@ -98,16 +130,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   textContainer: {
-    width: width,
-    height: height * 0.2,
+    paddingTop:90,
     display: 'flex',
     justifyContent: 'center',
     paddingHorizontal: 40,
+    paddingBottom:70,
   },
   backgroundImage: {
     width: width,
-    height: height * 0.8,
-    transform: [{ scale: 1.1 }, { translateY: 30 }],
+    height: height,
+  },
+  clippedRectangle: {
+    width: width,
+    height: height * 0.35,
   },
   imageStyle: {
     resizeMode: 'cover',
