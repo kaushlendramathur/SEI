@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { NavigationProp } from './interfaces';
+import { NavigationProp } from '../../types/interfaces';
 
 const Centers: React.FC<NavigationProp> = ({ navigate }) => {
   return (

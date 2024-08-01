@@ -8,7 +8,7 @@ import Terms from './Terms';
 import Refund from './Refund';
 import Privacy from './Privacy';
 import Logout from './Logout';
-import { ScreenNames } from './interfaces';
+import { ScreenNames } from '../../types/interfaces';
 
 const screens = {
   Profile,

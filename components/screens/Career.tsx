@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { NavigationProp } from './interfaces';
+import { NavigationProp } from '../../types/interfaces';
 
 const Career: React.FC<NavigationProp> = ({ navigate }) => {
   return (

@@ -1,4 +1,4 @@
-import { ScreenNames } from './interfaces';
+import { ScreenNames } from '../../types/interfaces';
 import AboutIcon from '../../assets/icons/profile-screen/About.svg';
 import CentersIcon from '../../assets/icons/profile-screen/Centers.svg';
 import GalleryIcon from '../../assets/icons/profile-screen/Gallery.svg';
