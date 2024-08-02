@@ -1,9 +1,9 @@
 import React,{useEffect} from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { NavigationProp } from '../../types/interfaces';
+import { NavigationProp } from '@/types/interfaces';
 import { navigationOptions } from './navigationOptions';
-import NavigationIcon from '../../assets/icons/profile-screen/Navigate.svg'; // Import navigation arrow icon
-import ProfileImage from '../../assets/icons/profile-screen/Profile.svg'; // Import profile image
+import NavigationIcon from '@/assets/icons/profile-screen/Navigate.svg'; // Import navigation arrow icon
+import ProfileImage from '@/assets/icons/profile-screen/Profile.svg'; // Import profile image
 
 const Profile: React.FC<NavigationProp> = ({ navigate }) => {
 

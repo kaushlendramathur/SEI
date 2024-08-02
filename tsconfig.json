@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "target": "esnext",
     "module": "commonjs",
     "jsx": "react-native",
@@ -15,5 +19,5 @@
   "exclude": [
     "node_modules"
   ],
-  "extends": "expo/tsconfig.base",
+  "extends": "expo/tsconfig.base"
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { NavigationProp } from '../../types/interfaces';
+import { NavigationProp } from '@/types/interfaces';
 
-const Logout: React.FC<NavigationProp> = ({ navigate }) => {
+const Career: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <View>
-      <Text>Logout</Text>
+      <Text>Career</Text>
       <TouchableOpacity onPress={() => navigate('Profile')}>
         <Text>Go to Profile</Text>
       </TouchableOpacity>
@@ -13,4 +13,4 @@ const Logout: React.FC<NavigationProp> = ({ navigate }) => {
   );
 };
 
-export default Logout;
+export default Career;
