@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingBottom: 55,
+    paddingBottom: 40,
   },
   forgotPassword: {
     paddingLeft: 60,

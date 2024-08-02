@@ -1,5 +1,4 @@
 import { Link, router } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
 import {
   Dimensions,
   ImageBackground,
@@ -16,30 +15,6 @@ import ClippedRectangle from '../assets/images/mainpage2.png'
 const { width, height } = Dimensions.get('window')
 
 export default function App() {
-  // return (
-  //   <View style={styles.container}>
-  //     <View style={styles.textContainer}>
-  //       <StatusBar style='auto' />
-  //       <Text style={styles.header}>SEI EDUCATIONAL TRUST</Text>
-  //       <Text style={styles.subHeader}>
-  //         Approved by D.G.Shipping, Govt. of India
-  //       </Text>
-  //       <Text style={styles.subHeader}>
-  //         MTI No:303014(Kolkata) | MTI No:103011(Faridabad)
-  //       </Text>
-  //       <Link href='/home' style={{ color: 'purple' }}>
-  //         Go MainPage
-  //       </Link>
-  //     </View>
-  //     <ImageBackground
-  //       source={BackgroundImage as ImageSourcePropType}
-  //       style={styles.backgroundImage}
-  //       imageStyle={styles.imageStyle}
-  //     >
-       
-  //     </ImageBackground>
-  //   </View>
-  // )
   return (
     <ImageBackground
       source={BackgroundImage as ImageSourcePropType}
@@ -99,7 +74,7 @@ const styles = StyleSheet.create({
     left: 30,
   },
   button: {
-    top: 330,
+    top: height-500,
     marginHorizontal: 60,
     backgroundColor: 'grey',
     height: 60,
@@ -117,7 +92,7 @@ const styles = StyleSheet.create({
   signUp: {
     display: 'flex',
     alignSelf: 'center',
-    top: 340,
+    top: height-490,
     color: 'white',
     fontSize: 15,
   },

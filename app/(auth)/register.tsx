@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingRight: 180,
     paddingTop: 10,
-    paddingBottom: 55,
+    paddingBottom: 40,
   },
   button: {
     marginHorizontal: 60,
