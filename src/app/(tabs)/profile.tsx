@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native'
-import screens, { ScreenNames } from '../../components/screens/screens';
+import screens, { ScreenNames } from '@/components/screens/screens';
 import { usePathname } from 'expo-router';
 
 const Profile = () => {

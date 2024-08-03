@@ -9,8 +9,8 @@ import {
   View,
 } from 'react-native'
 
-import BackgroundImage from '../assets/images/mainpage.png'
-import ClippedRectangle from '../assets/images/mainpage2.png'
+import BackgroundImage from '@/assets/images/mainpage.png'
+import ClippedRectangle from '@/assets/images/mainpage2.png'
 
 const { width, height } = Dimensions.get('window')
 
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'white',
     position: 'static',
-    top: 200,
+    top: 260,
     left: 30,
   },
   button: {

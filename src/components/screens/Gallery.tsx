@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { NavigationProp } from '../../types/interfaces';
+import { NavigationProp } from '@/types/interfaces';
 
-const Refund: React.FC<NavigationProp> = ({ navigate }) => {
+const Gallery: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <View>
-      <Text>Refund</Text>
+      <Text>Gallery</Text>
       <TouchableOpacity onPress={() => navigate('Profile')}>
         <Text>Go to Profile</Text>
       </TouchableOpacity>
@@ -13,4 +13,4 @@ const Refund: React.FC<NavigationProp> = ({ navigate }) => {
   );
 };
 
-export default Refund;
+export default Gallery;
