@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'white',
     position: 'static',
-    top: 200,
+    top: 260,
     left: 30,
   },
   button: {
