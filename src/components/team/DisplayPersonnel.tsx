@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
 import icons from '@/constants/icons';
-import { Person } from '@/types/team/person';
+import { Person } from '@/types/team/Person';
 
 const extractName = (name: string): string => {
   const parts = name.split(/[,()]/);
@@ -9,7 +9,6 @@ const extractName = (name: string): string => {
 };
 
 const DisplayPersonnel = memo(({ personnel, header }: { personnel: Person[]; header: string; }) => {
-
   return (
     <>
       <Text style={styles.header}>{header}</Text>

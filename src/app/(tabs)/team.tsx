@@ -10,7 +10,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { fetchFacultyMembers, fetchStaffMembers } from '@/api/fetchTeamMembers';
 import DisplayPersonnel from '@/components/team/DisplayPersonnel'; 
-import { Person } from '@/types/team/person';
+import { Person } from '@/types/team/Person';
 
 const Team = () => {
   const [activeCity, setActiveCity] = useState<string>('Kolkata');
@@ -45,17 +45,14 @@ const Team = () => {
   const getFilteredPersonnel = useCallback((personnel: Person[], city: string): Person[] => {
     return personnel.filter(
       (person) =>
-        person.Designation.includes(city) ||
-        !person.Designation.match(/Kolkata|Faridabad/)
+        person.Designation.includes(city) 
     );
   }, []);
 
   const faculties = facultyMembersQuery.data?.DataModel || [];
   const staff = staffMembersQuery.data?.DataModel || [];
 
-  const filteredFaculties = useMemo(() => getFilteredPersonnel(faculties, activeCity), [faculties,  getFilteredPersonnel]);
-  const filteredStaff = useMemo(() => getFilteredPersonnel(staff, activeCity), [staff, getFilteredPersonnel]);
-
+  const filteredFaculties = useMemo(() => getFilteredPersonnel(faculties, activeCity), [faculties, activeCity,  getFilteredPersonnel]);
 
   return (
     <View style={[styles.container, !isVisible && styles.removePadding]}>
@@ -103,7 +100,7 @@ const Team = () => {
         )}
         {staffMembersQuery.isSuccess && (
           <DisplayPersonnel
-            personnel={filteredStaff}
+            personnel={staff}
             header={'OFFICE EXECUTIVE & OTHERS:'}
           />
         )}
