@@ -1,150 +1,61 @@
-import { SyntheticEvent, useEffect, useRef, useState } from 'react'
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import {
   Animated,
-  Image,
-  ImageSourcePropType,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
-} from 'react-native'
-import icons from '../../constants/icons'
-
-interface Person {
-  id: number
-  name: string
-  position: string
-}
-
-const dummyFaculty: Person[] = [
-  {
-    id: 1,
-    name: 'faculty1',
-    position: 'CEO',
-  },
-  {
-    id: 2,
-    name: 'faculty2',
-    position: 'CEO',
-  },
-  {
-    id: 3,
-    name: 'faculty3',
-    position: 'CEO',
-  },
-  {
-    id: 4,
-    name: 'faculty4',
-    position: 'CEO',
-  },
-  {
-    id: 5,
-    name: 'faculty1',
-    position: 'CEO',
-  },
-  {
-    id: 6,
-    name: 'faculty2',
-    position: 'CEO',
-  },
-  {
-    id: 7,
-    name: 'faculty3',
-    position: 'CEO',
-  },
-  {
-    id: 8,
-    name: 'faculty4',
-    position: 'CEO',
-  },
-]
-
-const dummyFaculty2: Person[] = [
-  {
-    id: 1,
-    name: 'faculty1',
-    position: 'CEO',
-  },
-  {
-    id: 2,
-    name: 'faculty2',
-    position: 'CEO',
-  },
-  {
-    id: 3,
-    name: 'faculty3',
-    position: 'CEO',
-  },
-]
-
-const DisplayFaculty = ({
-  faculties,
-  header,
-}: {
-  faculties: Person[]
-  header: string
-}) => {
-  return (
-    <>
-      <Text style={styles.header}>{header}</Text>
-      <View style={styles.grid}>
-        {faculties.map((faculty, index) => {
-          return (
-            <View key={index} style={styles.facultyContainer}>
-              <Image
-                source={icons.user as ImageSourcePropType}
-                style={styles.image}
-              />
-              <Text style={styles.name}>{faculty.name}</Text>
-              <Text style={styles.position}>{faculty.position}</Text>
-            </View>
-          )
-        })}
-      </View>
-    </>
-  )
-}
+} from 'react-native';
+import { useQuery } from '@tanstack/react-query';
+import { fetchFacultyMembers, fetchStaffMembers } from '@/api/fetchTeamMembers';
+import DisplayPersonnel from '@/components/team/DisplayPersonnel'; 
+import { Person } from '@/types/team/Person';
 
 const Team = () => {
-  const [faculties, setFaculties] = useState<Person[]>(dummyFaculty)
-  const [activeCity, setActiveCity] = useState<string>('Kolkata')
-  const [isVisible, setIsVisible] = useState<boolean>(true)
-  const [lastPageTop, setLastPageTop] = useState<number>(0)
+  const [activeCity, setActiveCity] = useState<string>('Kolkata');
+  const [isVisible, setIsVisible] = useState<boolean>(true);
+  const previousScrollY = useRef(0);
+  const scrollThreshold = 200;
 
-  useEffect(() => {
-    if (activeCity === 'Kolkata') {
-      setFaculties(dummyFaculty)
-    } else {
-      setFaculties(dummyFaculty2)
+  const handleScroll = useCallback((event: any) => {
+    const currentScrollY = event.nativeEvent.contentOffset.y;
+    const scrollDifference = currentScrollY - previousScrollY.current;
+
+    if (Math.abs(scrollDifference) > scrollThreshold) {
+      if (currentScrollY > previousScrollY.current) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      previousScrollY.current = currentScrollY;
     }
-  }, [activeCity])
+  }, []);
 
-  const handleScroll = (e: any) => {
-    const top = e.nativeEvent.contentOffset.y
-    console.log(top)
-    if (top <= 0) {
-      setLastPageTop(top)
-      setIsVisible(true)
-    } else if (top >= 1000) {
-      setLastPageTop(top)
-      setIsVisible(false)
-    } else {
-      const timeoutId = setTimeout(() => {
-        if (top > lastPageTop) {
-          setIsVisible(false)
-        } else {
-          setIsVisible(true)
-        }
-        setLastPageTop(top)
-      }, 200)
+  const facultyMembersQuery = useQuery({
+    queryKey: ['facultyMembers'],
+    queryFn: fetchFacultyMembers,
+  });
 
-      return () => clearTimeout(timeoutId)
-    }
-  }
+  const staffMembersQuery = useQuery({
+    queryKey: ['staffMembers'],
+    queryFn: fetchStaffMembers,
+  });
+
+  const getFilteredPersonnel = useCallback((personnel: Person[], city: string): Person[] => {
+    return personnel.filter(
+      (person) =>
+        person.Designation.includes(city) 
+    );
+  }, []);
+
+  const faculties = facultyMembersQuery.data?.DataModel || [];
+  const staff = staffMembersQuery.data?.DataModel || [];
+
+  const filteredFaculties = useMemo(() => getFilteredPersonnel(faculties, activeCity), [faculties, activeCity,  getFilteredPersonnel]);
 
   return (
-    <View style={[styles.containter, !isVisible && styles.removePadding]}>
+    <View style={[styles.container, !isVisible && styles.removePadding]}>
       <Animated.View style={[styles.row, !isVisible && styles.hidden]}>
         <Pressable
           onPress={() => setActiveCity('Kolkata')}
@@ -180,19 +91,26 @@ const Team = () => {
         </Pressable>
       </Animated.View>
 
-      <ScrollView onScroll={handleScroll}>
-        <DisplayFaculty faculties={faculties} header={'Faculty'} />
-        <DisplayFaculty
-          faculties={faculties}
-          header={'Office Executives and Others'}
-        />
+      <ScrollView onScroll={handleScroll} >
+        {facultyMembersQuery.isSuccess && (
+          <DisplayPersonnel
+            personnel= {filteredFaculties}
+            header={'Faculties:'}
+          />
+        )}
+        {staffMembersQuery.isSuccess && (
+          <DisplayPersonnel
+            personnel={staff}
+            header={'OFFICE EXECUTIVE & OTHERS:'}
+          />
+        )}
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  containter: {
+  container: {
     backgroundColor: 'white',
     paddingBottom: 80,
   },
@@ -202,35 +120,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 25,
   },
-  facultyContainer: {
-    width: '45%',
-    alignItems: 'center',
-  },
-  image: {
-    width: 200,
-    height: 160,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  position: {
-    fontSize: 14,
-    color: '#666',
-  },
-  header: {
-    paddingLeft: 20,
-    paddingVertical: 20,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: 'white',
     marginHorizontal: 19,
     marginTop: 20,
-
     borderColor: 'rgba(0, 0, 0, 0.2)',
     borderWidth: 2,
     borderRadius: 30,
@@ -258,6 +153,6 @@ const styles = StyleSheet.create({
   removePadding: {
     paddingBottom: 30,
   },
-})
+});
 
-export default Team
+export default Team;
