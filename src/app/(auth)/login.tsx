@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   View,
+  ScrollView
 } from 'react-native'
 import loginImage from '../../assets/images/login.png'
 import { useState } from 'react'
@@ -23,6 +24,9 @@ import {
   faEyeSlash,
   faLock,
 } from '@fortawesome/free-solid-svg-icons'
+import { loginUser } from '@/api/loginUser' 
+import auth from '@/utils/auth'
+import { saveCredentials, clearCredentials } from '@/utils/authStore' 
 
 const { width, height } = Dimensions.get('window')
 
@@ -32,81 +36,98 @@ const Login = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [rememberMe, setRememberMe] = useState<boolean>(false)
 
-  const handleLogin = () => {
-    console.log('---Loging user----')
-    console.log('userName:', username)
-    console.log('password:', password)
+  const handleLogin = async () => {
+    try {
+      const response = await loginUser(username, password)
+      if (response?.Success === true) {
+        await auth.signIn(response?.DataModel)
+        if (rememberMe) {
+          await saveCredentials(username, password)
+        } else {
+          await clearCredentials()
+        }
+        router.push('/home')
+      }
+      else{
+        console.log("Login:",response)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={loginImage as ImageSourcePropType}
-        style={styles.backgroundImage}
-        imageStyle={styles.imageStyle}
-      >
-        <Pressable style={styles.arrowDiv} onPress={()=>router.back()}>
-          <FontAwesomeIcon
-            icon={faArrowLeft}
-            style={styles.arrow}
+    <ScrollView automaticallyAdjustKeyboardInsets={true}>
+      <View style={styles.container}>
+        <ImageBackground
+          source={loginImage as ImageSourcePropType}
+          style={styles.backgroundImage}
+          imageStyle={styles.imageStyle}
+        >
+          <Pressable style={styles.arrowDiv} onPress={()=>router.back()}>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              style={styles.arrow}
+            />
+          </Pressable>
+        </ImageBackground>
+
+        <Text style={styles.header}>Welcome Back</Text>
+        <Text style={styles.subHeader}>Login To Your Account</Text>
+
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faUser} style={styles.icon} />
+          <TextInput
+            placeholder='Username'
+            style={styles.input}
+            autoCapitalize='none'
+            onChangeText={(text) => setUsername(text)}
           />
-        </Pressable>
-      </ImageBackground>
+        </View>
 
-      <Text style={styles.header}>Welcome Back</Text>
-      <Text style={styles.subHeader}>Login To Your Account</Text>
-
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faUser} style={styles.icon} />
-        <TextInput
-          placeholder='Username'
-          style={styles.input}
-          autoCapitalize='none'
-          onChangeText={(text) => setUsername(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faLock} style={styles.icon} />
-        <TextInput
-          placeholder='Password'
-          style={styles.input}
-          autoCapitalize='none'
-          secureTextEntry={!isVisible}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <Pressable onPress={() => setIsVisible((prev) => !prev)}>
-          <FontAwesomeIcon
-            icon={isVisible ? faEye : faEyeSlash}
-            style={styles.eyeButton}
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faLock} style={styles.icon} />
+          <TextInput
+            placeholder='Password'
+            style={styles.input}
+            autoCapitalize='none'
+            secureTextEntry={!isVisible}
+            onChangeText={(text) => setPassword(text)}
           />
+          <Pressable onPress={() => setIsVisible((prev) => !prev)}>
+            <FontAwesomeIcon
+              icon={isVisible ? faEye : faEyeSlash}
+              style={styles.eyeButton}
+            />
+          </Pressable>
+        </View>
+
+        <View style={styles.bottomSection}>
+          <Pressable onPress={() => setRememberMe((prev) => !prev)}>
+            <FontAwesomeIcon
+              icon={rememberMe ? faCheckCircle : faCircle}
+              style={styles.icon}
+            />
+          </Pressable>
+          <Text>Remember Me</Text>
+
+          <Link href='/profile' style={styles.forgotPassword}>
+            Forgot Password?
+          </Link>
+        </View>
+
+        <Pressable style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
         </Pressable>
+        <Text style={styles.richText}>
+          New Student Register Here{' '}
+          <Link href='/register' style={styles.signUp}>
+            SignUp
+          </Link>
+        </Text>
       </View>
-
-      <View style={styles.bottomSection}>
-        <Pressable onPress={() => setRememberMe((prev) => !prev)}>
-          <FontAwesomeIcon
-            icon={rememberMe ? faCheckCircle : faCircle}
-            style={styles.icon}
-          />
-        </Pressable>
-        <Text>Remember Me</Text>
-
-        <Link href='/profile' style={styles.forgotPassword}>
-          Forgot Password?
-        </Link>
-      </View>
-
-      <Pressable style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
-      <Text style={styles.richText}>
-        New Student Register Here{' '}
-        <Link href='/register' style={styles.signUp}>
-          SignUp
-        </Link>
-      </Text>
-    </View>
+      <View style={{ height: 30 }} /> 
+    </ScrollView>
   )
 }
 

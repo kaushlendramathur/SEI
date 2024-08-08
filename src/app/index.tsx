@@ -8,6 +8,8 @@ import {
   Text,
   View,
 } from 'react-native'
+import { useEffect } from 'react'
+import { getCredentials } from '@/utils/authStore'
 
 import BackgroundImage from '@/assets/images/mainpage.png'
 import ClippedRectangle from '@/assets/images/mainpage2.png'
@@ -15,6 +17,16 @@ import ClippedRectangle from '@/assets/images/mainpage2.png'
 const { width, height } = Dimensions.get('window')
 
 export default function App() {
+  useEffect(() => {
+    const loadCredentials = async () => {
+      const credential = await getCredentials();
+      if (credential) {
+        router.push('/home')
+      }
+    }
+    loadCredentials()
+  }, [])
+
   return (
     <ImageBackground
       source={BackgroundImage as ImageSourcePropType}
@@ -113,7 +125,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: width,
-    height: height,
+    height: height*1.1,
   },
   clippedRectangle: {
     width: width,
