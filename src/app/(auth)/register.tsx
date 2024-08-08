@@ -21,6 +21,7 @@ import {
   Text,
   TextInput,
   View,
+  ScrollView,
 } from 'react-native'
 import { RegisterType } from "@/types/auth/register";
 import { registerUser } from '@/api/registerUser'
@@ -64,102 +65,104 @@ const Register = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.arrowDiv} onPress={() => router.back()}>
-        <FontAwesomeIcon icon={faArrowLeft} style={styles.arrow} />
-      </Pressable>
-
-      <Text style={styles.header}>Register</Text>
-      <Text style={styles.subHeader}>Create Your New Account</Text>
-
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faUser} style={styles.icon} />
-        <TextInput
-          placeholder='Username'
-          style={styles.input}
-          autoCapitalize='none'
-          onChangeText={(text) => setUsername(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faLock} style={styles.icon} />
-        <TextInput
-          placeholder='Password'
-          style={styles.input}
-          autoCapitalize='none'
-          secureTextEntry={!isVisible}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <Pressable onPress={() => setIsVisible((prev) => !prev)}>
-          <FontAwesomeIcon
-            icon={isVisible ? faEye : faEyeSlash}
-            style={styles.eyeButton}
-          />
+    <ScrollView automaticallyAdjustKeyboardInsets={true}>
+      <View style={styles.container}>
+        <Pressable style={styles.arrowDiv} onPress={() => router.back()}>
+          <FontAwesomeIcon icon={faArrowLeft} style={styles.arrow} />
         </Pressable>
-      </View>
 
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faUser} style={styles.icon} />
-        <TextInput
-          placeholder='FirstName'
-          style={styles.input}
-          autoCapitalize='none'
-          onChangeText={(text) => setFirstname(text)}
-        />
-      </View>
+        <Text style={styles.header}>Register</Text>
+        <Text style={styles.subHeader}>Create Your New Account</Text>
 
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faUser} style={styles.icon} />
-        <TextInput
-          placeholder='LastName'
-          style={styles.input}
-          autoCapitalize='none'
-          onChangeText={(text) => setLastname(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
-        <TextInput
-          placeholder='Email Id'
-          style={styles.input}
-          autoCapitalize='none'
-          onChangeText={(text) => setEmailId(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faPhone} style={styles.icon} />
-        <TextInput
-          placeholder='Phone No'
-          style={styles.input}
-          autoCapitalize='none'
-          keyboardType='phone-pad'
-          onChangeText={(text) => setPhoneNo(text)}
-        />
-      </View>
-
-      <View style={styles.bottomSection}>
-        <Pressable onPress={() => setRememberMe((prev) => !prev)}>
-          <FontAwesomeIcon
-            icon={rememberMe ? faCircleCheck : faCircle}
-            style={styles.icon}
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faUser} style={styles.icon} />
+          <TextInput
+            placeholder='Username'
+            style={styles.input}
+            autoCapitalize='none'
+            onChangeText={(text) => setUsername(text)}
           />
-        </Pressable>
-        <Text>Remember Me</Text>
-      </View>
+        </View>
 
-      <Pressable style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Register</Text>
-      </Pressable>
-      <Text style={styles.richText}>
-        Already Have An Account?{' '}
-        <Link href='/login' style={styles.signIn}>
-          Login
-        </Link>
-      </Text>
-    </View>
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faLock} style={styles.icon} />
+          <TextInput
+            placeholder='Password'
+            style={styles.input}
+            autoCapitalize='none'
+            secureTextEntry={!isVisible}
+            onChangeText={(text) => setPassword(text)}
+          />
+          <Pressable onPress={() => setIsVisible((prev) => !prev)}>
+            <FontAwesomeIcon
+              icon={isVisible ? faEye : faEyeSlash}
+              style={styles.eyeButton}
+            />
+          </Pressable>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faUser} style={styles.icon} />
+          <TextInput
+            placeholder='FirstName'
+            style={styles.input}
+            autoCapitalize='none'
+            onChangeText={(text) => setFirstname(text)}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faUser} style={styles.icon} />
+          <TextInput
+            placeholder='LastName'
+            style={styles.input}
+            autoCapitalize='none'
+            onChangeText={(text) => setLastname(text)}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
+          <TextInput
+            placeholder='Email Id'
+            style={styles.input}
+            autoCapitalize='none'
+            onChangeText={(text) => setEmailId(text)}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faPhone} style={styles.icon} />
+          <TextInput
+            placeholder='Phone No'
+            style={styles.input}
+            autoCapitalize='none'
+            keyboardType='phone-pad'
+            onChangeText={(text) => setPhoneNo(text)}
+          />
+        </View>
+
+        <View style={styles.bottomSection}>
+          <Pressable onPress={() => setRememberMe((prev) => !prev)}>
+            <FontAwesomeIcon
+              icon={rememberMe ? faCircleCheck : faCircle}
+              style={styles.icon}
+            />
+          </Pressable>
+          <Text>Remember Me</Text>
+        </View>
+
+        <Pressable style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Register</Text>
+        </Pressable>
+        <Text style={styles.richText}>
+          Already Have An Account?{' '}
+          <Link href='/login' style={styles.signIn}>
+            Login
+          </Link>
+        </Text>
+      </View>
+    </ScrollView>
   )
 }
 
