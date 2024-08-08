@@ -23,6 +23,9 @@ import {
   faEyeSlash,
   faLock,
 } from '@fortawesome/free-solid-svg-icons'
+import { loginUser } from '@/api/loginUser' 
+import auth from '@/utils/auth'
+import { saveCredentials, clearCredentials } from '@/utils/authStore' 
 
 const { width, height } = Dimensions.get('window')
 
@@ -32,10 +35,24 @@ const Login = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [rememberMe, setRememberMe] = useState<boolean>(false)
 
-  const handleLogin = () => {
-    console.log('---Loging user----')
-    console.log('userName:', username)
-    console.log('password:', password)
+  const handleLogin = async () => {
+    try {
+      const response = await loginUser(username, password)
+      if (response?.Success === true) {
+        await auth.signIn(response?.DataModel)
+        if (rememberMe) {
+          await saveCredentials(username, password)
+        } else {
+          await clearCredentials()
+        }
+        router.push('/home')
+      }
+      else{
+        console.log("Login:",response)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

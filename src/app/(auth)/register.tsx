@@ -22,6 +22,8 @@ import {
   TextInput,
   View,
 } from 'react-native'
+import { RegisterType } from "@/types/auth/register";
+import { registerUser } from '@/api/registerUser'
 
 const { height, width } = Dimensions.get('window')
 
@@ -36,14 +38,29 @@ const Register = () => {
   const [emailId, setEmailId] = useState<string>('')
   const [phoneNo, setPhoneNo] = useState<string>('')
 
-  const handleRegister = () => {
-    console.log('----Registering User----')
-    console.log('username', username)
-    console.log('password',password)
-    console.log('firstname', firstname)
-    console.log('lastname', lastname)
-    console.log('emailId', emailId)
-    console.log('phoneNo', phoneNo)
+  const handleRegister = async() => {
+    
+    try {
+      const data : RegisterType ={
+        username : username,
+        password : password,
+        firstname: firstname,
+        lastname: lastname,
+        emailId: emailId,
+        phoneNo: phoneNo,
+        UserTypeID: 7,
+        isActive: true,
+      }
+      const response = await registerUser(data)
+      if (response?.Success === true) {
+        router.push('/login')
+      }
+      else{
+        console.log("Register:",response)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
