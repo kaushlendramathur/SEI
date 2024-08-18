@@ -4,6 +4,7 @@ import { NavigationProp } from '@/types/interfaces';
 import About1 from '@/assets/images/about-1.png'
 import About2 from '@/assets/images/about-2.png'
 import About3 from '@/assets/images/about-3.png'
+import About4 from '@/assets/images/about-4.png'
 import {aboutText} from '@/constants/static'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faLeftLong } from '@fortawesome/free-solid-svg-icons';
@@ -30,14 +31,13 @@ const Highlights = ({bold,plain}:{bold:string[],plain:string[]})=>{
 const About: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <ScrollView style={styles.container}>
-
       <ImageBackground
         source={About1 as ImageSourcePropType}
         style={{ height: 200 }}
         imageStyle={styles.imageStyle}
       >
-        <Pressable onPress={()=>navigate('Profile')}>
-          <FontAwesomeIcon icon={faLeftLong} style={styles.arrow}/>
+        <Pressable onPress={() => navigate('Profile')}>
+          <FontAwesomeIcon icon={faLeftLong} style={styles.arrow} />
         </Pressable>
       </ImageBackground>
       <View style={styles.textContainer}>
@@ -61,7 +61,7 @@ const About: React.FC<NavigationProp> = ({ navigate }) => {
           {aboutText.vision.intro}
           {aboutText.vision.points.map((point, index) => {
             return (
-              <View key={index} style={{ flexDirection: 'row',paddingTop:5}}>
+              <View key={index} style={{ flexDirection: 'row', paddingTop: 5 }}>
                 <Text style={{ fontWeight: 'bold' }}>{index + 1} . </Text>
                 <Text>{point}</Text>
               </View>
@@ -73,8 +73,13 @@ const About: React.FC<NavigationProp> = ({ navigate }) => {
           style={{ height: 500, marginVertical: 30 }}
           imageStyle={styles.imageStyle}
         />
+        <Highlights bold={aboutText.bold} plain={aboutText.plain} />
+        <ImageBackground
+          source={About4 as ImageSourcePropType}
+          style={{ height: 500, marginVertical: 30 }}
+          imageStyle={styles.imageStyle}
+        />
       </View>
-      <Highlights bold={aboutText.bold} plain={aboutText.plain} />
     </ScrollView>
   )
 };
@@ -95,9 +100,7 @@ const styles = StyleSheet.create({
     padding:15,
   },
   highlights:{
-    paddingHorizontal:30,
     paddingVertical:5, 
-
   }
 })
 
