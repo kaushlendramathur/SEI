@@ -58,7 +58,7 @@ const About: React.FC<NavigationProp> = ({ navigate }) => {
           Our Vision
         </Text>
         <Text>
-          {aboutText.vision.intro}
+          {aboutText.vision.intro}{`\n`}
           {aboutText.vision.points.map((point, index) => {
             return (
               <View key={index} style={{ flexDirection: 'row', paddingTop: 5 }}>
