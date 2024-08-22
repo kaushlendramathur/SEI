@@ -66,14 +66,21 @@ const Centers: React.FC<NavigationProp> = ({ navigate }) => {
   const [cityGps,setCityGps] = useState(Kolkata)
 
   return (
-    <View style={[styles.container,activeCity==="Faridabad" && {paddingBottom:200}]}>
+    <View
+      style={[
+        styles.container,
+        activeCity === 'Faridabad' && { paddingBottom: 200 },
+      ]}
+    >
       {/* <Text>Centers</Text>
       <TouchableOpacity onPress={() => navigate('Profile')}>
         <Text>Go to Profile</Text>
       </TouchableOpacity> */}
       <View style={styles.row}>
         <Pressable
-          onPress={() => {setActiveCity('Kolkata'),setCityGps(Kolkata)}}
+          onPress={() => {
+            setActiveCity('Kolkata'), setCityGps(Kolkata)
+          }}
           style={[
             styles.button,
             activeCity === 'Kolkata' && styles.activeButton,
@@ -89,7 +96,9 @@ const Centers: React.FC<NavigationProp> = ({ navigate }) => {
           </Text>
         </Pressable>
         <Pressable
-          onPress={() => {setActiveCity('Faridabad'),setCityGps(Faridabad)}}
+          onPress={() => {
+            setActiveCity('Faridabad'), setCityGps(Faridabad)
+          }}
           style={[
             styles.button,
             activeCity === 'Faridabad' && styles.activeButton,
@@ -113,19 +122,6 @@ const Centers: React.FC<NavigationProp> = ({ navigate }) => {
               : centersText.Faridabad
           }
         />
-        <MapView
-          style={styles.map}
-          region={
-            cityGps.mapDetails
-          }
-        >
-          <Marker
-            coordinate={
-             cityGps.marker
-            }
-            title='SEI Educational Trust'
-          />
-        </MapView>
         <Image
           source={
             activeCity === 'Kolkata'
@@ -135,6 +131,9 @@ const Centers: React.FC<NavigationProp> = ({ navigate }) => {
           resizeMode='contain'
           style={styles.centerImage}
         />
+        <MapView style={styles.map} region={cityGps.mapDetails}>
+          <Marker coordinate={cityGps.marker} title='SEI Educational Trust' />
+        </MapView>
       </ScrollView>
     </View>
   )
