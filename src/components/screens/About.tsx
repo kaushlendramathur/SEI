@@ -17,7 +17,7 @@ const Highlights = ({bold,plain}:{bold:string[],plain:string[]})=>{
       {bold.map((text, index) => {
         return (
           <View key={index} style={styles.highlights}>
-            <Text>
+            <Text style={{ textAlign: 'justify' }}>
               <Text style={{ fontWeight: 'bold' }}>{text} : </Text>
               {plain[index]}
             </Text>
@@ -44,7 +44,7 @@ const About: React.FC<NavigationProp> = ({ navigate }) => {
         <Text style={{ fontSize: 30, fontWeight: 300, paddingBottom: 10 }}>
           About Us
         </Text>
-        <Text>{aboutText.main}</Text>
+        <Text style={{ textAlign: 'justify' }}>{aboutText.main}</Text>
         <ImageBackground
           source={About2 as ImageSourcePropType}
           style={{ height: 400, marginVertical: 30 }}
@@ -53,17 +53,18 @@ const About: React.FC<NavigationProp> = ({ navigate }) => {
         <Text style={{ fontSize: 30, fontWeight: 300, paddingBottom: 10 }}>
           Our Mission
         </Text>
-        <Text>{aboutText.misson}</Text>
+        <Text style={{ textAlign: 'justify' }}>{aboutText.misson}</Text>
         <Text style={{ fontSize: 30, fontWeight: 300, paddingVertical: 10 }}>
           Our Vision
         </Text>
-        <Text>
-          {aboutText.vision.intro}{`\n`}
+        <Text style={{ textAlign: 'justify' }}>
+          {aboutText.vision.intro}
+          {`\n`}
           {aboutText.vision.points.map((point, index) => {
             return (
               <View key={index} style={{ flexDirection: 'row', paddingTop: 5 }}>
                 <Text style={{ fontWeight: 'bold' }}>{index + 1} . </Text>
-                <Text>{point}</Text>
+                <Text style={{ textAlign: 'justify', paddingRight:30}}>{point}</Text>
               </View>
             )
           })}
