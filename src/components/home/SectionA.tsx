@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     container:{
         padding:20,
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        marginVertical: 20
     },
     description:{
         fontSize: 16,

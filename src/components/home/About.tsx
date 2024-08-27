@@ -5,7 +5,7 @@ const { width } = Dimensions.get('window');
 
 const data = {
   title: '"Why SEI Education Trust Institute of Marine?"',
-  description: 'For over 30 years, SEI Education Trust Institute of Marine has been a leader in marine education, offering hands-on, practical training designed to equip students with the skills they need for successful careers in the maritime industry.',
+  description: 'For over 20 years, SEI Education Trust Institute of Marine has been a leader in marine education, offering hands-on, practical training designed to equip students with the skills they need for successful careers in the maritime industry.',
   experties: [
     {
       title: "Experienced Faculty",
@@ -23,7 +23,6 @@ const data = {
 };
 
 const About = () => {
-  const scrollX = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef<FlatList>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -38,13 +37,6 @@ const About = () => {
 
   const animateScroll = (index: number) => {
     flatListRef.current?.scrollToOffset({ offset: index * width, animated: true });
-    setCurrentIndex(index);
-  };
-
-  const onScroll = (event: any) => {
-    const offsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.floor(offsetX / width) % data.experties.length;
-    setCurrentIndex(index)
   };
 
   return (
@@ -58,7 +50,7 @@ const About = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
-        
+        onViewableItemsChanged={(e)=>{setCurrentIndex(Number(e.viewableItems[0].index))}}
         scrollEventThrottle={16} // Ensures smooth scrolling event handling
         renderItem={({ item }) => (
           <View style={styles.card}>
