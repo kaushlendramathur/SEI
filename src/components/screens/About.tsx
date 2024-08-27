@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, View, TouchableOpacity, ScrollView, ImageBackground, Image,ImageSourcePropType, StyleSheet, Dimensions, Pressable } from 'react-native';
+import React, {useState} from 'react';
+import { Text, View, TouchableOpacity, ScrollView, ImageBackground, Image,ImageSourcePropType, StyleSheet, Dimensions, Pressable, Modal } from 'react-native';
 import { NavigationProp } from '@/types/interfaces';
 import About1 from '@/assets/images/about-1.png'
 import About2 from '@/assets/images/about-2.png'
@@ -32,7 +32,13 @@ const Highlights = ({bold,plain}:{bold:string[],plain:string[]})=>{
 
 const About: React.FC<NavigationProp> = ({ navigate }) => {
 
-  
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const windowDimensions = Dimensions.get('window');
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
@@ -82,18 +88,38 @@ const About: React.FC<NavigationProp> = ({ navigate }) => {
         <Highlights bold={aboutText.bold} plain={aboutText.plain} />
        
         <View>
-          <Image
-             source={About4 as ImageSourcePropType}
-             style={{width:'100%', marginVertical:20}}
-          />
-          <View style={styles.overlay}>
-            <Text style={styles.smallText}>Certificate by Lloyd's Register Marine and Offshore India LLP</Text>
-            <TouchableOpacity style={styles.largeButton}>
-              <Text style={styles.buttonText}>Large Button</Text>
-            </TouchableOpacity>
-          </View>
+      <Image
+        source={About4 as ImageSourcePropType} 
+        style={styles.docImage}
+        resizeMode="contain"
+      />
+      <View style={styles.overlay}>
+        <Text style={styles.smallText}>
+          Certificate by Lloyd's Register Marine and Offshore India LLP
+        </Text>
+        <TouchableOpacity style={styles.largeButton} onPress={toggleModal}>
+          <Text style={styles.buttonText}>View Large</Text>
+        </TouchableOpacity>
+      </View>
 
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.modalContainer}>
+          <Image
+            source={About4 as ImageSourcePropType} // Replace with your actual image path
+            style={[styles.modalImage, { width: windowDimensions.width, height: windowDimensions.height }]}
+            resizeMode="contain"
+          />
+          <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
         </View>
+      </Modal>
+      </View>
       </View>
     </ScrollView>
   )
@@ -111,7 +137,6 @@ const styles = StyleSheet.create({
   },
   arrow:{
     color:'white',
-    marginTop:-5,
     padding:15,
   },
   highlights:{
@@ -138,6 +163,32 @@ const styles = StyleSheet.create({
     fontSize: 18, // Large font size
     fontWeight: 'bold',
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  },
+  modalImage: {
+    width: '100%',
+    height: '100%',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    padding: 10,
+    backgroundColor: 'red',
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  docImage:{
+    width:'100%',
+    marginVertical: 20
+  }
 })
 
 export default About;
