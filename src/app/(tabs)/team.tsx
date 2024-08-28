@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     paddingBottom: 80,
+    minWidth:'100%'
   },
   grid: {
     flexDirection: 'row',
