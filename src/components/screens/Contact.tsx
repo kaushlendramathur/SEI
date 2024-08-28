@@ -29,7 +29,7 @@ const IconWrapper = ({
   subTitle: string
 }) => {
   return (
-    <View style={{ paddingBottom: 20 }}>
+    <View style={{ paddingBottom: 30 }}>
       <View style={styles.iconContainer}>
         <FontAwesomeIcon
           icon={icon}
@@ -61,7 +61,7 @@ const InputWrapper = ({
   type: 'text' | 'number' | 'textArea'
 }) => {
   return (
-    <View style={{ paddingBottom: 10 }}>
+    <View style={{ paddingBottom: 20 }}>
       <Text
         style={{
           color: 'white',
@@ -75,9 +75,9 @@ const InputWrapper = ({
         style={styles.textInput}
         placeholder={placeHolder}
         keyboardType={type === 'number' ? 'numeric' : 'default'}
-        placeholderTextColor='gray'
+        placeholderTextColor='white'
         multiline={type==='textArea'}
-        numberOfLines={6}
+        numberOfLines={type === 'textArea'?6:2}
       />
     </View>
   )
@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
     width: width,
   },
   bgImage: {
-    height: height,
     width: width,
   },
   imageStyle: {
@@ -169,6 +168,7 @@ const styles = StyleSheet.create({
   textContainer: {
     paddingLeft: 20,
     paddingTop: 20,
+    paddingBottom:100
   },
   header: {
     fontSize: 25,
@@ -184,23 +184,24 @@ const styles = StyleSheet.create({
   textInput: {
     borderBottomColor: 'white',
     borderBottomWidth: 2,
-    marginRight: 40,
+    marginRight: 10,
     paddingLeft: 20,
     fontSize: 15,
     paddingTop: 10,
     paddingBottom: 5,
     color: 'white',
+    
   },
   button: {
     backgroundColor: '#f2a60c',
-    height: 40,
+    height: 50,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 20,
     borderRadius: 10,
-    marginTop: 90,
+    marginTop: 30,
   },
   tintOverlay: {
     ...StyleSheet.absoluteFillObject, 
