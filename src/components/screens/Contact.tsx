@@ -85,7 +85,7 @@ const InputWrapper = ({
 
 const Contact: React.FC<NavigationProp> = ({ navigate }) => {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} automaticallyAdjustKeyboardInsets={true}>
       <ImageBackground
         source={ContactBG as ImageSourcePropType}
         imageStyle={styles.imageStyle}
