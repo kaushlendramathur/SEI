@@ -5,7 +5,7 @@ import About1 from '@/assets/images/about-1.png'
 import About2 from '@/assets/images/about-2.png'
 import About3 from '@/assets/images/about-3.png'
 import About4 from '@/assets/images/about-4.png'
-import {aboutText} from '@/constants/static'
+import {aboutText} from '@/constants/staticAbout'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faLeftLong } from '@fortawesome/free-solid-svg-icons';
 
