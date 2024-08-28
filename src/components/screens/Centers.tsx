@@ -69,7 +69,7 @@ const Centers: React.FC<NavigationProp> = ({ navigate }) => {
     <View
       style={[
         styles.container,
-        activeCity === 'Faridabad' && { paddingBottom: 200 },
+        { paddingBottom: 180 },
       ]}
     >
       {/* <Text>Centers</Text>
@@ -128,7 +128,7 @@ const Centers: React.FC<NavigationProp> = ({ navigate }) => {
               ? (CenterKolkata as ImageSourcePropType)
               : (CenterFaridabad as ImageSourcePropType)
           }
-          resizeMode='contain'
+          resizeMode='cover'
           style={styles.centerImage}
         />
         <MapView style={styles.map} region={cityGps.mapDetails}>
@@ -182,7 +182,6 @@ const styles = StyleSheet.create({
   map: {
     width: width,
     height: 400,
-    marginBottom: 30,
   },
 })
 
