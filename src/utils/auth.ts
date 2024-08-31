@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+import { saveToken, clearCredentials, clearToken } from './authStore';
 
 interface AuthState {
   signIn: (authToken: string) => Promise<void>;
@@ -8,10 +9,11 @@ interface AuthState {
 const auth: AuthState = {
   signIn: async (authToken) => {
     console.log('Login successful:');
-    await SecureStore.setItemAsync('authToken', authToken);
+    await saveToken(authToken);
   },
   signOut: async () => {
-    await SecureStore.deleteItemAsync('authToken');
+    await clearToken();
+    await clearCredentials();
   },
 };
 
