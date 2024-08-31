@@ -6,7 +6,11 @@ import PdfViewer from '../PdfViewer';
 const Terms: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <View>
-      <PdfViewer />
+      <PdfViewer
+        uri={
+          'https://www.termsfeed.com/public/uploads/2021/12/sample-terms-conditions-agreement.pdf'
+        }
+      />
     </View>
   )
 };
