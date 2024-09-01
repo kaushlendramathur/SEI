@@ -37,11 +37,12 @@ const TabLayout = () => {
     <>
       <Tabs
         screenOptions={{
+          tabBarHideOnKeyboard: true,
           tabBarShowLabel: false,
           tabBarStyle: {
             height: 80,
             borderRadius: 20,
-          },
+          }
         }}
       >
         <Tabs.Screen

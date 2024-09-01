@@ -2,15 +2,13 @@ import React from 'react';
 import { Image, ScrollView, StyleSheet, View, Dimensions, Text, Pressable } from 'react-native';
 import { images, ImageNames } from '@/utils/importImages';
 import { NavigationProp } from '@/types/interfaces';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
-
-const ImageGallery: React.FC<NavigationProp> = ({navigate}) => {
+const ImageGallery: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Pressable onPress={() => navigate('Profile')}>
-          <FontAwesomeIcon icon={faLeftLong} style={styles.arrow} />
+      <Pressable onPress={() => navigate('Profile')} style={styles.backButton}>
+        <MaterialIcons name="arrow-back" size={28} style={styles.arrowIcon} />
       </Pressable>
 
       <Text style={styles.title}>Gallery</Text>
@@ -30,29 +28,36 @@ const ImageGallery: React.FC<NavigationProp> = ({navigate}) => {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10 
+  },
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 1, 
     padding: 10, 
+    borderRadius: 20, 
+    backgroundColor: 'gray', 
   },
-  imageWrapper: {
-    marginBottom: 20, 
-  },
-  image: {
-    width: Dimensions.get('window').width - 20, 
-    height: 200,
-    resizeMode: 'cover'
-  },
-  arrow:{
-    color:'gray',
-    marginTop:0,
-    padding:15,
+  arrowIcon: {
+    color: 'white',
   },
   title: {
     color: 'black',
     fontSize: 24,
-    fontWeight: 'semibold',
+    fontWeight: '600',
+    marginTop: 60, // Adjust margin top to account for the back button
     marginBottom: 20,
     textAlign: 'center',
   },
-  
+  imageWrapper: {
+    marginBottom: 20,
+  },
+  image: {
+    width: Dimensions.get('window').width - 20,
+    height: 200,
+    resizeMode: 'cover',
+  },
 });
 
 export default ImageGallery;
