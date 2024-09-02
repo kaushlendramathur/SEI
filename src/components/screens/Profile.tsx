@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { NavigationProp } from '@/types/interfaces';
 import { navigationOptions } from './navigationOptions';
