@@ -1,16 +1,17 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { NavigationProp } from '@/types/interfaces';
-
-const Privacy: React.FC<NavigationProp> = ({ navigate }) => {
+import PdfViewer from '../PdfViewer';
+ const Privacy: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <View>
-      <Text>Privacy</Text>
-      <TouchableOpacity onPress={() => navigate('Profile')}>
-        <Text>Go to Profile</Text>
-      </TouchableOpacity>
+      <PdfViewer
+        uri={
+          'https://www.seiedutrust.com/Content/images/2-PRIVACY%20POLICY.pdf'
+        }
+      />
     </View>
-  );
-};
+  )
+}
 
 export default Privacy;
