@@ -4,6 +4,7 @@ import { NavigationProp } from '@/types/interfaces';
 import auth from '@/utils/auth';
 import { router } from 'expo-router';
 
+
 const Logout: React.FC<NavigationProp> = ({ navigate }) => {
   const handleLogout = () => {
     auth.signOut();
@@ -17,7 +18,7 @@ const Logout: React.FC<NavigationProp> = ({ navigate }) => {
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>Log Out</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.profileButton} onPress={() => navigate('Profile')}>
+        <TouchableOpacity style={styles.profileButton} onPress={() => router.push('profile')}>
           <Text style={styles.profileButtonText}>Cancel</Text>
         </TouchableOpacity>
       </View>

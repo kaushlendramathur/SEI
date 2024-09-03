@@ -151,9 +151,7 @@ const Contact: React.FC<NavigationProp> = ({ navigate }) => {
         style={styles.bgImage}
       >
         <View style={styles.tintOverlay} />
-        <Pressable onPress={() => navigate('Profile')} style={styles.backButton}>
-          <MaterialIcons name="arrow-back" size={28} style={styles.arrowIcon} />
-        </Pressable>
+    
         <View style={styles.textContainer}>
           <Text style={styles.header}>CONTACT US</Text>
           <IconWrapper

@@ -4,6 +4,7 @@ import { NavigationProp } from '@/types/interfaces';
 import { navigationOptions } from './navigationOptions';
 import NavigationIcon from '@/assets/icons/profile-screen/Navigate.svg'; // Import navigation arrow icon
 import ProfileImage from '@/assets/icons/profile-screen/Profile.svg'; // Import profile image
+import { Link, router } from 'expo-router';
 
 const Profile: React.FC<NavigationProp> = ({ navigate }) => {
 
@@ -18,7 +19,7 @@ const Profile: React.FC<NavigationProp> = ({ navigate }) => {
         <View style={styles.scrollContainer}>
           <ScrollView style={styles.scrollViewContainer} showsVerticalScrollIndicator={false}>
             {navigationOptions.map((item) => (
-              <TouchableOpacity key={item.name} style={styles.optionContainer} onPress={() => navigate(item.name)}>
+              <TouchableOpacity key={item.name} style={styles.optionContainer} onPress={() => router.push(`/profile/${item.name}`)}>
                 <item.icon width={24} height={24} style={styles.icon} />
                 <Text style={styles.optionText}>{item.displayName}</Text>
                 <NavigationIcon width={24} height={24} style={styles.navigationIcon} />

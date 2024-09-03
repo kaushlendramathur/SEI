@@ -45,9 +45,6 @@ const About: React.FC<NavigationProp> = ({ navigate }) => {
         source={About1 as ImageSourcePropType}
         style={{ height: 200 }}
       >
-        <Pressable onPress={() => navigate('Profile')}>
-          <FontAwesomeIcon icon={faLeftLong} style={styles.arrow} />
-        </Pressable>
       </ImageBackground>
       <View style={styles.textContainer}>
         <Text style={{ fontSize: 30, fontWeight: 300, paddingBottom: 10 }}>
