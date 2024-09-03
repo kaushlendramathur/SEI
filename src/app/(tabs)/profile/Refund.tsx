@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { NavigationProp } from '@/types/interfaces';
-import PdfViewer from '../PdfViewer';
+import PdfViewer from '@/components/PdfViewer';
 
 const Refund: React.FC<NavigationProp> = ({ navigate }) => {
   return (

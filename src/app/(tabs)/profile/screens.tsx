@@ -1,4 +1,4 @@
-import Profile from './Profile';
+import Profile from '.';
 import Centers from './Centers';
 import About from './About';
 import Gallery from './Gallery';
