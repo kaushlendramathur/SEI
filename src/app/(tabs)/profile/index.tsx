@@ -1,19 +1,31 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { NavigationProp } from '@/types/interfaces';
 import { navigationOptions } from './navigationOptions';
 import NavigationIcon from '@/assets/icons/profile-screen/Navigate.svg'; // Import navigation arrow icon
 import ProfileImage from '@/assets/icons/profile-screen/Profile.svg'; // Import profile image
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
+import { getCredentials } from '@/utils/authStore';
 
 const Profile: React.FC<NavigationProp> = ({ navigate }) => {
+  const [userName, setUserName] = React.useState<string | null>(null);
+  
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const credentials = await getCredentials();
+      if (credentials) {
+        setUserName(credentials.username);
+      }
+    };
+    fetchUserName();
+  }, []);
 
  
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
-        <ProfileImage width={100} height={100} style={styles.profileImage} />
-        <Text style={styles.profileName}>John Doe</Text>
+        <ProfileImage style={styles.profileImage} />
+        <Text style={styles.profileName}>{userName}</Text>
       </View>
       <View style={styles.navigationContainer}>
         <View style={styles.scrollContainer}>
@@ -43,7 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0'
   },
   profileImage: {
-    marginBottom: 8
+    marginVertical: 8
   },
   profileName: {
     fontSize: 20,
