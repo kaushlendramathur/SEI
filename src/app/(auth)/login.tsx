@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import {
   Dimensions,
   ImageBackground,
@@ -7,10 +8,11 @@ import {
   Text,
   TextInput,
   View,
-  ScrollView
+  ScrollView,
+  ActivityIndicator,
+  Alert
 } from 'react-native'
 import loginImage from '../../assets/images/login.png'
-import { useState } from 'react'
 import { Link, router } from 'expo-router'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {
@@ -24,9 +26,9 @@ import {
   faEyeSlash,
   faLock,
 } from '@fortawesome/free-solid-svg-icons'
-import { loginUser } from '@/api/loginUser' 
+import { loginUser } from '@/api/loginUser'
 import auth from '@/utils/auth'
-import { saveCredentials, clearCredentials } from '@/utils/authStore' 
+import { saveCredentials, clearCredentials } from '@/utils/authStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -35,8 +37,11 @@ const Login = () => {
   const [password, setPassword] = useState<string>('')
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [rememberMe, setRememberMe] = useState<boolean>(false)
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const handleLogin = async () => {
+    setStatus('loading')
     try {
       const response = await loginUser(username, password)
       if (response?.Success === true) {
@@ -46,12 +51,16 @@ const Login = () => {
         } else {
           await clearCredentials()
         }
+        setStatus('success')
         router.push('/home')
-      }
-      else{
-        console.log("Login:",response)
+      } else {
+        setStatus('error')
+        setErrorMessage(response?.Message || 'Login failed')
+        Alert.alert('Login Error', response?.Message || 'Unknown error occurred')
       }
     } catch (error) {
+      setStatus('error')
+      setErrorMessage('An error occurred during login')
       console.log(error)
     }
   }
@@ -64,7 +73,7 @@ const Login = () => {
           style={styles.backgroundImage}
           imageStyle={styles.imageStyle}
         >
-          <Pressable style={styles.arrowDiv} onPress={()=>router.back()}>
+          <Pressable style={styles.arrowDiv} onPress={() => router.back()}>
             <FontAwesomeIcon
               icon={faArrowLeft}
               style={styles.arrow}
@@ -116,8 +125,18 @@ const Login = () => {
           </Link>
         </View>
 
-        <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
+        {status === 'loading' && (
+          <ActivityIndicator size="large" color="#1B3552" style={styles.loader} />
+        )}
+
+        {status === 'error' && errorMessage && (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        )}
+
+        <Pressable style={styles.button} onPress={handleLogin} disabled={status === 'loading'}>
+          <Text style={styles.buttonText}>
+            {status === 'loading' ? 'Logging In...' : 'Login'}
+          </Text>
         </Pressable>
         <Text style={styles.richText}>
           New Student Register Here{' '}
@@ -126,7 +145,7 @@ const Login = () => {
           </Link>
         </Text>
       </View>
-      <View style={{ height: 30 }} /> 
+      <View style={{ height: 30 }} />
     </ScrollView>
   )
 }
@@ -226,12 +245,20 @@ const styles = StyleSheet.create({
     color: '#1B3552',
   },
   arrowDiv: {
-    borderRadius:50,
-    backgroundColor:'white',
+    borderRadius: 50,
+    backgroundColor: 'white',
     position: 'absolute',
-    padding:6,
+    padding: 6,
     top: 40,
     left: 45,
+  },
+  loader: {
+    marginVertical: 20,
+  },
+  errorMessage: {
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 10,
   },
 })
 

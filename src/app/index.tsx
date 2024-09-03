@@ -21,7 +21,7 @@ export default function App() {
     const loadCredentials = async () => {
       const credential = await getCredentials();
       if (credential) {
-        router.push('/home')
+        router.navigate('/home')
       }
     }
     loadCredentials()
@@ -47,9 +47,6 @@ export default function App() {
             <Text style={styles.subHeader}>
               MTI No:303014(Kolkata) | MTI No:103011(Faridabad)
             </Text>
-            <Link href='/home' style={{ color: 'purple' }}>
-              Go MainPage
-            </Link>
           </View>
           <View>
             <Text
@@ -57,7 +54,7 @@ export default function App() {
             >{`The Best App \n for the Marine \n Courses`}</Text>
             <Pressable
               style={styles.button}
-              onPress={() => router.push('/login')}
+              onPress={() => router.navigate('/login')}
             >
               <Text style={styles.buttonText}>Sign In</Text>
             </Pressable>

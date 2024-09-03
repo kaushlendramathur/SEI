@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
 import icons from '@/constants/icons';
 import { Person } from '@/types/team/Person';
 
@@ -9,21 +9,27 @@ const extractName = (name: string): string => {
 };
 
 const DisplayPersonnel = memo(({ personnel, header }: { personnel: Person[]; header: string; }) => {
+  const renderItem = ({ item }: { item: Person }) => (
+    <View style={styles.personContainer}>
+      <Image
+        source={icons.user as ImageSourcePropType}
+        style={styles.image}
+      />
+      <Text style={styles.name}>{extractName(item.Name)}</Text>
+      <Text style={styles.position}>{item.Designation}</Text>
+    </View>
+  );
+
   return (
     <>
       <Text style={styles.header}>{header}</Text>
-      <View style={styles.grid}>
-        {personnel.map((person, index) => (
-          <View key={index} style={styles.personContainer}>
-            <Image
-              source={icons.user as ImageSourcePropType}
-              style={styles.image}
-            />
-            <Text style={styles.name}>{extractName(person.Name)}</Text>
-            <Text style={styles.position}>{person.Designation}</Text>
-          </View>
-        ))}
-      </View>
+      <FlatList
+        data={personnel}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.Name} // Use a unique identifier for the key
+        numColumns={2} // Adjust for grid layout
+        columnWrapperStyle={styles.grid} // Apply grid styles
+      />
     </>
   );
 });
@@ -36,8 +42,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
     paddingHorizontal: 25,
   },
@@ -47,8 +51,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   image: {
-    width: 200,
-    height: 160,
+    width: 100, // Adjusted size for consistency
+    height: 100, // Adjusted size for consistency
     borderRadius: 50,
     marginBottom: 10,
   },

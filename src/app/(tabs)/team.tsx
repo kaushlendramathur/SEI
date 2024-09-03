@@ -2,21 +2,25 @@ import React, { useState, useRef, useCallback, useMemo } from 'react';
 import {
   Animated,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   View,
+  FlatList,
 } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchFacultyMembers, fetchStaffMembers } from '@/api/fetchTeamMembers';
 import DisplayPersonnel from '@/components/team/DisplayPersonnel'; 
+import SkeletonLoader from '@/components/team/SkeletonLoader'; // Import the SkeletonLoader component
 import { Person } from '@/types/team/Person';
 
-const Team = () => {
+const Team: React.FC = () => {
   const [activeCity, setActiveCity] = useState<string>('Kolkata');
   const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const previousScrollY = useRef(0);
   const scrollThreshold = 200;
+
+  const queryClient = useQueryClient();
 
   const handleScroll = useCallback((event: any) => {
     const currentScrollY = event.nativeEvent.contentOffset.y;
@@ -35,11 +39,13 @@ const Team = () => {
   const facultyMembersQuery = useQuery({
     queryKey: ['facultyMembers'],
     queryFn: fetchFacultyMembers,
+    refetchOnWindowFocus: false,
   });
 
   const staffMembersQuery = useQuery({
     queryKey: ['staffMembers'],
     queryFn: fetchStaffMembers,
+    refetchOnWindowFocus: false,
   });
 
   const getFilteredPersonnel = useCallback((personnel: Person[], city: string): Person[] => {
@@ -52,7 +58,25 @@ const Team = () => {
   const faculties = facultyMembersQuery.data?.DataModel || [];
   const staff = staffMembersQuery.data?.DataModel || [];
 
-  const filteredFaculties = useMemo(() => getFilteredPersonnel(faculties, activeCity), [faculties, activeCity,  getFilteredPersonnel]);
+  const filteredFaculties = useMemo(() => getFilteredPersonnel(faculties, activeCity), [faculties, activeCity, getFilteredPersonnel]);
+
+  const data = [
+    {
+      header: 'Faculties:',
+      personnel: filteredFaculties,
+    },
+    {
+      header: 'OFFICE EXECUTIVE & OTHERS:',
+      personnel: staff,
+    },
+  ];
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    queryClient.invalidateQueries({queryKey:['facultyMembers']});
+    queryClient.invalidateQueries({queryKey:['staffMembers']});
+    setRefreshing(false);
+  }, [queryClient]);
 
   return (
     <View style={[styles.container, !isVisible && styles.removePadding]}>
@@ -91,20 +115,26 @@ const Team = () => {
         </Pressable>
       </Animated.View>
 
-      <ScrollView onScroll={handleScroll} >
-        {facultyMembersQuery.isSuccess && (
-          <DisplayPersonnel
-            personnel= {filteredFaculties}
-            header={'Faculties:'}
-          />
-        )}
-        {staffMembersQuery.isSuccess && (
-          <DisplayPersonnel
-            personnel={staff}
-            header={'OFFICE EXECUTIVE & OTHERS:'}
-          />
-        )}
-      </ScrollView>
+      {facultyMembersQuery.isLoading || staffMembersQuery.isLoading ? (
+        <SkeletonLoader />
+      ) : facultyMembersQuery.isError || staffMembersQuery.isError ? (
+        <Text style={styles.errorText}>Failed to load data. Please try again later.</Text>
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.header}
+          renderItem={({ item }) => (
+            <DisplayPersonnel
+              personnel={item.personnel}
+              header={item.header}
+            />
+          )}
+          ListEmptyComponent={<Text style={styles.errorText}>No data available.</Text>}
+          onScroll={handleScroll}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      )}
     </View>
   );
 };
@@ -113,13 +143,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     paddingBottom: 80,
-    minWidth:'100%'
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 25,
+    minWidth: '100%',
+    minHeight: '100%'
   },
   row: {
     flexDirection: 'row',
@@ -153,6 +178,11 @@ const styles = StyleSheet.create({
   },
   removePadding: {
     paddingBottom: 30,
+  },
+  errorText: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: 'red',
   },
 });
 
