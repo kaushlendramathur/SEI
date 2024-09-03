@@ -120,7 +120,7 @@ const Login = () => {
           </Pressable>
           <Text>Remember Me</Text>
 
-          <Link href='/login' style={styles.forgotPassword}>
+          <Link href='/forget' style={styles.forgotPassword}>
             Forgot Password?
           </Link>
         </View>
