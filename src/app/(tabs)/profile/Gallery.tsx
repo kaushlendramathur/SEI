@@ -7,11 +7,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 const ImageGallery: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Pressable onPress={() => navigate('Profile')} style={styles.backButton}>
-        <MaterialIcons name="arrow-back" size={28} style={styles.arrowIcon} />
-      </Pressable>
-
-      <Text style={styles.title}>Gallery</Text>
 
       {(Object.keys(images) as ImageNames[]).map((imageName, index) => (
         <View key={index} style={styles.imageWrapper}>
