@@ -8,4 +8,4 @@ export const loginUserURL = `${apiBaseURL}/Login/LogonFromDevice/`
 
 export const registerUserURL = `${apiBaseURL}/Login/StudentRegister/`
 
-export const LatestNewsURL = `https://www.seiedutrust.com/Home/GetAllLatestNews/`
+export const LatestNewsURL = `${apiBaseURL}/Home/GetAllLatestNews/`
