@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import { NavigationProp } from '@/types/interfaces';
 import { navigationOptions } from './navigationOptions';
 import NavigationIcon from '@/assets/icons/profile-screen/Navigate.svg'; // Import navigation arrow icon
-import ProfileImage from '@/assets/icons/profile-screen/Profile.svg'; // Import profile image
+import ProfileImage from '@/assets/images/profile.png'; // Import profile image
 import { Link, router } from 'expo-router';
 
 const Profile: React.FC<NavigationProp> = ({ navigate }) => {
@@ -12,7 +12,7 @@ const Profile: React.FC<NavigationProp> = ({ navigate }) => {
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
-        <ProfileImage width={100} height={100} style={styles.profileImage} />
+        <Image source={ProfileImage} style={styles.profileImage} /> 
         <Text style={styles.profileName}>John Doe</Text>
       </View>
       <View style={styles.navigationContainer}>
@@ -43,6 +43,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0'
   },
   profileImage: {
+    width: 100,
+    height:100,
+    borderRadius: 50,
     marginBottom: 8
   },
   profileName: {
