@@ -17,9 +17,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faLocationPin, faPhone } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { Picker } from '@react-native-picker/picker'
-import { MaterialIcons } from '@expo/vector-icons'
+import { postContact } from '@/api/postContact'
+import { ContactData } from '@/types/contact'
 
-const { height, width } = Dimensions.get('screen')
+const { width } = Dimensions.get('screen')
 
 const IconWrapper = ({
   icon,
@@ -48,7 +49,7 @@ const IconWrapper = ({
           {title}
         </Text>
       </View>
-      <Text style={{ color: 'white', fontSize: 12 }}>{subTitle}</Text>
+      <Text style={{ color: 'white', fontSize: 14, paddingRight: 20 }}>{subTitle}</Text>
     </View>
   )
 }
@@ -73,7 +74,7 @@ const InputWrapper = ({
   onChangeText?: (text: string) => void
 }) => {
   return (
-    <View style={{ paddingBottom: 20 }}>
+    <View style={{ paddingBottom: 20, paddingRight: 10 }}>
       <Text
         style={{
           color: 'white',
@@ -124,23 +125,25 @@ const Contact: React.FC<NavigationProp> = ({ navigate }) => {
 
   const handleSubmit = () => {
     setStatus('submitting')
-    
-    // Simulate an API call
-    setTimeout(() => {
-      const success = true // You can replace this with actual logic
-
-      if (success) {
+    const body: ContactData = {
+      description: message,
+      email: email,
+      name: name,
+      phoneNo: phoneNo,
+      sendTo: selectedCenter,
+    }
+    postContact(body)
+      .then(() => {
         setStatus('success')
-        // Optionally reset form fields
         setName('')
         setEmail('')
         setPhoneNo('')
         setSelectedCenter('')
         setMessage('')
-      } else {
+      })
+      .catch(() => {
         setStatus('error')
-      }
-    }, 2000) // Simulate a 2-second delay for the API call
+      })
   }
 
   return (
@@ -157,17 +160,17 @@ const Contact: React.FC<NavigationProp> = ({ navigate }) => {
           <IconWrapper
             icon={faPhone}
             title="Call Us"
-            subTitle="+919830782955, +919643502955"
+            subTitle={`+91 9830 789 789, +91 9830 789 789`}
           />
           <IconWrapper
             icon={faLocationPin}
             title="Location"
-            subTitle={`S - 13 Sector 11D Market, Faridabad-121006, Haryana, India \n  'Debamita', B.B.T Road, Vill. - Gopalpur, P.O. Sarkarpool, P.S. - Maheshtala, Kolkata - 700141, India`}
+            subTitle={`\nKolkata - 'Debamita', B.B.T Road, Vill. - Gopalpur, P.O. Sarkarpool, P.S. - Maheshtala, Kolkata - 700141, India\n \nFaridabad - S - 13 Sector 11D Market, Faridabad - 121006, Haryana, India `}
           />
           <IconWrapper
             icon={faClock}
             title="Business Hours"
-            subTitle="Mon - Fri …… 10 am - 8 pm, Sat, Sun ....… Closed"
+            subTitle="Mon - Sat …… 9 am - 5 pm, Sun ....… Closed"
           />
 
           <InputWrapper
