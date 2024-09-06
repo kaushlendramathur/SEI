@@ -9,4 +9,6 @@ export const loginUserURL = `${apiBaseURL}/Login/LogonFromDevice/`
 
 export const registerUserURL = `${apiBaseURL}/Login/StudentRegister/`
 
-export const myCoursesURL = `${apiBaseURL}/Home/GetMyCourses/`
+export const myCoursesFormsURL = `${apiBaseURL}/Home/getFormDetailsStudentByDevice/`
+
+export const myCoursesFormDetailURLS = `${apiBaseURL}/Home/ShowAdmissionFormDetailsByDevice/`
