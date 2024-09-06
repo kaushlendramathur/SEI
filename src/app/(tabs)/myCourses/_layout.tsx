@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="form/[link]" options={{ title: 'Form Viewer' }} />
+      <Stack.Screen name="form/[id]" options={{ title: 'Form Details' }} />
     </Stack>
   );
 }

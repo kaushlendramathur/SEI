@@ -3,36 +3,29 @@ import React from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
+import { fetchForms } from '@/api/fetchForms';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-const data = [
-  {
-    id: '1',
-    formId: 'KOL/FORM/2018/0086411',
-    date: '2023-09-01',
-    pdfUrl: 'https://www.seiedutrust.com/Home/ShowForm?id=8516',
-  },
-  {
-    id: '2',
-    formId: 'KOL/FORM/2018/0086412',
-    date: '2023-09-02',
-    pdfUrl: 'https://www.seiedutrust.com/Home/ShowForm?id=8516',
-  },
-];
 
 const MyCourses = () => {
   const router = useRouter();
 
-  const handleViewClick = (pdfUrl: string) => {
+  const data = useQuery({
+    queryKey: ['forms'],
+    queryFn: fetchForms,
+    refetchOnWindowFocus: false,
+  }).data?.DataModel || [];
+  const handleViewClick = (Id: string) => {
     // Navigate to the dynamic route with 'link' parameter
-    router.push(`/myCourses/form/${encodeURIComponent(pdfUrl)}`);
+    router.push(`/myCourses/form/${Id}`);
   };
 
   const renderRow = ({ item }: { item: any }) => (
     <View style={styles.row}>
-      <Text style={styles.idCell}>{item.id}</Text>
-      <Text style={styles.formIdCell}>{item.formId}</Text>
-      <Text style={styles.dateCell}>{item.date}</Text>
-      <TouchableOpacity style={styles.viewButton} onPress={() => handleViewClick(item.pdfUrl)}>
+      <Text style={styles.idCell}>{item.SLNO}</Text>
+      <Text style={styles.formIdCell}>{item.FormNameID}</Text>
+      <Text style={styles.dateCell}>{item.Date}</Text>
+      <TouchableOpacity style={styles.viewButton} onPress={() => handleViewClick(item.ID)}>
         <FontAwesomeIcon icon={faEye} />
       </TouchableOpacity>
     </View>
@@ -47,7 +40,7 @@ const MyCourses = () => {
         <Text style={styles.viewButton}>View</Text>
       </View>
 
-      <FlatList data={data} renderItem={renderRow} keyExtractor={(item) => item.id} />
+      <FlatList data={data} renderItem={renderRow} showsVerticalScrollIndicator={false} keyExtractor={(item) => String(item.SLNO)} />
     </View>
   );
 };
