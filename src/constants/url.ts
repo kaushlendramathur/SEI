@@ -1,4 +1,5 @@
 const apiBaseURL = "http://seiedutrust-001-site2.gtempurl.com"
+const apiBaseURL2 = "https://www.seiedutrust.com/Home/ShowForm?id=8650"
 
 export const facultyMembersURL = `${apiBaseURL}/Home/GetAllFacultyMembers/`
 
