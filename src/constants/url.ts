@@ -13,3 +13,5 @@ export const LatestNewsURL = `${apiBaseURL}/Home/GetAllLatestNews/`
 export const myCoursesFormsURL = `${apiBaseURL}/Home/getFormDetailsStudentByDevice/`
 
 export const myCoursesFormDetailURLS = `${apiBaseURL}/Home/ShowAdmissionFormDetailsByDevice/`
+
+export const contactURL = `${apiBaseURL}/Home/SendContactInfo/`

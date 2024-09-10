@@ -12,8 +12,7 @@ export const refreshToken = async (): Promise<Token> => {
         credentials.username,
         credentials.password,
       )
-
-      if (response.ok) {
+      if (response?.Success) {
         const token = response?.DataModel;
         await saveToken(token);
         return token;
