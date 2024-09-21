@@ -1,4 +1,4 @@
-const apiBaseURL = "http://seiedutrust-001-site2.gtempurl.com"
+const apiBaseURL = process.env.EXPO_PUBLIC_API_URL? process.env.EXPO_PUBLIC_API_URL: "http://seiedutrust-001-site2.gtempurl.com"
 
 export const facultyMembersURL = `${apiBaseURL}/Home/GetAllFacultyMembers/`
 
