@@ -8,6 +8,8 @@ import {
   Text,
   View,
 } from 'react-native'
+import { useEffect } from 'react'
+import { getCredentials } from '@/utils/authStore'
 
 import BackgroundImage from '@/assets/images/mainpage.png'
 import ClippedRectangle from '@/assets/images/mainpage2.png'
@@ -15,6 +17,16 @@ import ClippedRectangle from '@/assets/images/mainpage2.png'
 const { width, height } = Dimensions.get('window')
 
 export default function App() {
+  useEffect(() => {
+    const loadCredentials = async () => {
+      const credential = await getCredentials();
+      if (credential) {
+        router.navigate('/home')
+      }
+    }
+    loadCredentials()
+  }, [])
+
   return (
     <ImageBackground
       source={BackgroundImage as ImageSourcePropType}
@@ -35,9 +47,6 @@ export default function App() {
             <Text style={styles.subHeader}>
               MTI No:303014(Kolkata) | MTI No:103011(Faridabad)
             </Text>
-            <Link href='/home' style={{ color: 'purple' }}>
-              Go MainPage
-            </Link>
           </View>
           <View>
             <Text
@@ -45,7 +54,7 @@ export default function App() {
             >{`The Best App \n for the Marine \n Courses`}</Text>
             <Pressable
               style={styles.button}
-              onPress={() => router.push('/login')}
+              onPress={() => router.navigate('/login')}
             >
               <Text style={styles.buttonText}>Sign In</Text>
             </Pressable>
@@ -113,7 +122,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: width,
-    height: height,
+    height: height*1.1,
   },
   clippedRectangle: {
     width: width,

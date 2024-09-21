@@ -37,11 +37,12 @@ const TabLayout = () => {
     <>
       <Tabs
         screenOptions={{
+          tabBarHideOnKeyboard: true,
           tabBarShowLabel: false,
           tabBarStyle: {
             height: 80,
             borderRadius: 20,
-          },
+          }
         }}
       >
         <Tabs.Screen
@@ -141,9 +142,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 2,
     borderRadius: 10,
-    height: 50,
     width: 80,
-    marginTop: 15,
+    marginTop: 10,
+    paddingVertical: 6,
+    marginHorizontal:4,
   },
   Focused: {
     backgroundColor: '#e8ecfc',

@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import {
   Dimensions,
   ImageBackground,
@@ -7,9 +8,11 @@ import {
   Text,
   TextInput,
   View,
+  ScrollView,
+  ActivityIndicator,
+  Alert
 } from 'react-native'
 import loginImage from '../../assets/images/login.png'
-import { useState } from 'react'
 import { Link, router } from 'expo-router'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {
@@ -23,6 +26,9 @@ import {
   faEyeSlash,
   faLock,
 } from '@fortawesome/free-solid-svg-icons'
+import { loginUser } from '@/api/loginUser'
+import auth from '@/utils/auth'
+import { saveCredentials, clearCredentials } from '@/utils/authStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -31,82 +37,116 @@ const Login = () => {
   const [password, setPassword] = useState<string>('')
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [rememberMe, setRememberMe] = useState<boolean>(false)
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
-  const handleLogin = () => {
-    console.log('---Loging user----')
-    console.log('userName:', username)
-    console.log('password:', password)
+  const handleLogin = async () => {
+    setStatus('loading')
+    try {
+      const response = await loginUser(username, password)
+      if (response?.Success === true) {
+        await auth.signIn(response?.DataModel)
+        if (rememberMe) {
+          await saveCredentials(username, password)
+        } else {
+          await clearCredentials()
+        }
+        setStatus('success')
+        router.push('/home')
+      } else {
+        setStatus('error')
+        setErrorMessage(response?.Message || 'Login failed')
+        Alert.alert('Login Error', response?.Message || 'Unknown error occurred')
+      }
+    } catch (error) {
+      setStatus('error')
+      setErrorMessage('An error occurred during login')
+      console.log(error)
+    }
   }
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={loginImage as ImageSourcePropType}
-        style={styles.backgroundImage}
-        imageStyle={styles.imageStyle}
-      >
-        <Pressable style={styles.arrowDiv} onPress={()=>router.back()}>
-          <FontAwesomeIcon
-            icon={faArrowLeft}
-            style={styles.arrow}
+    <ScrollView automaticallyAdjustKeyboardInsets={true}>
+      <View style={styles.container}>
+        <ImageBackground
+          source={loginImage as ImageSourcePropType}
+          style={styles.backgroundImage}
+          imageStyle={styles.imageStyle}
+        >
+          <Pressable style={styles.arrowDiv} onPress={() => router.back()}>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              style={styles.arrow}
+            />
+          </Pressable>
+        </ImageBackground>
+
+        <Text style={styles.header}>Welcome Back</Text>
+        <Text style={styles.subHeader}>Login To Your Account</Text>
+
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faUser} style={styles.icon} />
+          <TextInput
+            placeholder='Username'
+            style={styles.input}
+            autoCapitalize='none'
+            onChangeText={(text) => setUsername(text)}
           />
-        </Pressable>
-      </ImageBackground>
+        </View>
 
-      <Text style={styles.header}>Welcome Back</Text>
-      <Text style={styles.subHeader}>Login To Your Account</Text>
-
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faUser} style={styles.icon} />
-        <TextInput
-          placeholder='Username'
-          style={styles.input}
-          autoCapitalize='none'
-          onChangeText={(text) => setUsername(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <FontAwesomeIcon icon={faLock} style={styles.icon} />
-        <TextInput
-          placeholder='Password'
-          style={styles.input}
-          autoCapitalize='none'
-          secureTextEntry={!isVisible}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <Pressable onPress={() => setIsVisible((prev) => !prev)}>
-          <FontAwesomeIcon
-            icon={isVisible ? faEye : faEyeSlash}
-            style={styles.eyeButton}
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faLock} style={styles.icon} />
+          <TextInput
+            placeholder='Password'
+            style={styles.input}
+            autoCapitalize='none'
+            secureTextEntry={!isVisible}
+            onChangeText={(text) => setPassword(text)}
           />
+          <Pressable onPress={() => setIsVisible((prev) => !prev)}>
+            <FontAwesomeIcon
+              icon={isVisible ? faEye : faEyeSlash}
+              style={styles.eyeButton}
+            />
+          </Pressable>
+        </View>
+
+        <View style={styles.bottomSection}>
+          <Pressable onPress={() => setRememberMe((prev) => !prev)}>
+            <FontAwesomeIcon
+              icon={rememberMe ? faCheckCircle : faCircle}
+              style={styles.icon}
+            />
+          </Pressable>
+          <Text>Remember Me</Text>
+
+          <Link href='/forget' style={styles.forgotPassword}>
+            Forgot Password?
+          </Link>
+        </View>
+
+        {status === 'loading' && (
+          <ActivityIndicator size="large" color="#1B3552" style={styles.loader} />
+        )}
+
+        {status === 'error' && errorMessage && (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        )}
+
+        <Pressable style={styles.button} onPress={handleLogin} disabled={status === 'loading'}>
+          <Text style={styles.buttonText}>
+            {status === 'loading' ? 'Logging In...' : 'Login'}
+          </Text>
         </Pressable>
+        <Text style={styles.richText}>
+          New Student Register Here{' '}
+          <Link href='/register' style={styles.signUp}>
+            SignUp
+          </Link>
+        </Text>
       </View>
-
-      <View style={styles.bottomSection}>
-        <Pressable onPress={() => setRememberMe((prev) => !prev)}>
-          <FontAwesomeIcon
-            icon={rememberMe ? faCheckCircle : faCircle}
-            style={styles.icon}
-          />
-        </Pressable>
-        <Text>Remember Me</Text>
-
-        <Link href='/profile' style={styles.forgotPassword}>
-          Forgot Password?
-        </Link>
-      </View>
-
-      <Pressable style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
-      <Text style={styles.richText}>
-        New Student Register Here{' '}
-        <Link href='/register' style={styles.signUp}>
-          SignUp
-        </Link>
-      </Text>
-    </View>
+      <View style={{ height: 30 }} />
+    </ScrollView>
   )
 }
 
@@ -205,12 +245,20 @@ const styles = StyleSheet.create({
     color: '#1B3552',
   },
   arrowDiv: {
-    borderRadius:50,
-    backgroundColor:'white',
+    borderRadius: 50,
+    backgroundColor: 'white',
     position: 'absolute',
-    padding:6,
+    padding: 6,
     top: 40,
     left: 45,
+  },
+  loader: {
+    marginVertical: 20,
+  },
+  errorMessage: {
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 10,
   },
 })
 
