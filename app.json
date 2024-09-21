@@ -25,7 +25,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sei_educational_trust.seieducationaltrust"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
@@ -34,6 +35,12 @@
       "expo-router",
       "expo-secure-store"
     ],
-    "owner": "sei_educational_trust"
+    "owner": "sei_educational_trust",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/52d38fac-233a-4ef0-b7d4-3b20f8b86214"
+    }
   }
 }
