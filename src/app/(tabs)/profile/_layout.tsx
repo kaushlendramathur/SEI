@@ -17,7 +17,7 @@ export default function Layout() {
         <Stack.Screen 
         name='company/[document]' 
         options={({ route }) => ({
-          title: route.params?.document ? `Company - ${route.params.document}` : 'Document',
+          title: route.params?.document ? ` ${route.params?.document}` : 'Document',
         })}
       />
       </Stack>

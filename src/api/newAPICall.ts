@@ -9,6 +9,7 @@ const newsApiCall = async (endpoints: string, body: object) => {
             headers: myHeaders
          }
         );
+        
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(`Error ${response.status}: ${errorData.message || 'Unknown error'}`);

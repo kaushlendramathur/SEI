@@ -8,9 +8,11 @@ import { CartCourse } from '@/types/courses/cartCourse'
 // Define the type for the course prop (adjust according to your data structure)
 type CourseProps = {
   course: any;
+  location: string;
+  courseIndexMap: Map<number, number>;
 };
 
-const Course = ({ course }: CourseProps) => {
+const Course = ({ course, location, courseIndexMap }: CourseProps) => {
   
 
   return (
@@ -24,7 +26,7 @@ const Course = ({ course }: CourseProps) => {
           <Text style={styles.white}>{course.DurationofCourse[0]}</Text>
         </View>
         <View style={styles.location}>
-          <Text style={styles.font16}>Kolkata</Text>
+          <Text style={styles.font16}>{location=== '1'?"Kolkata":"Faridabad"}</Text>
         </View>
       </ImageBackground>
       
@@ -32,7 +34,7 @@ const Course = ({ course }: CourseProps) => {
         <Text style={styles.header}>{course.Name}</Text>
         <Spoiler description={course.DocumentsRequired} label="Documents Required" />
         <Spoiler description={course.Eligibilty} label="Eligibility" />
-        <DateBox CourseScheduleDetails={course.CourseScheduleDetails} courseName={course.Name}/>
+        <DateBox CourseScheduleDetails={course.CourseScheduleDetails} courseName={course.Name} CourseId = {course.ID} courseIndexMap ={courseIndexMap}/>
       </View>
     </View>
   )

@@ -1,20 +1,25 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { fetchForms } from '@/api/fetchForms';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-
+import { useQuery } from '@tanstack/react-query';
+import SkeletonLoader from '@/components/team/SkeletonLoader';
 
 const MyCourses = () => {
   const router = useRouter();
 
-  const data = useQuery({
+  // Use the useQuery hook to fetch data and manage loading state
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['forms'],
     queryFn: fetchForms,
     refetchOnWindowFocus: false,
-  }).data?.DataModel || [];
+  });
+
+  // Extract DataModel from data or set as empty array if undefined
+  const formsData = data?.DataModel || [];
+
   const handleViewClick = (Id: string) => {
     // Navigate to the dynamic route with 'link' parameter
     router.push(`/myCourses/form/${Id}`);
@@ -31,6 +36,22 @@ const MyCourses = () => {
     </View>
   );
 
+  // Render loading indicator when fetching data
+  if (isLoading) {
+    return (
+      <SkeletonLoader/>
+    );
+  }
+
+  // Render error message if fetching fails
+  if (isError) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Failed to load forms. Please try again later.</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.tableHeader}>
@@ -40,7 +61,12 @@ const MyCourses = () => {
         <Text style={styles.viewButton}>View</Text>
       </View>
 
-      <FlatList data={data} renderItem={renderRow} showsVerticalScrollIndicator={false} keyExtractor={(item) => String(item.SLNO)} />
+      <FlatList
+        data={formsData}
+        renderItem={renderRow}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => String(item.SLNO)}
+      />
     </View>
   );
 };
@@ -79,6 +105,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
   },
 });
 

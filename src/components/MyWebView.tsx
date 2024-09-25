@@ -8,8 +8,6 @@ const MyWebView = ({ uri }: { uri: string }) => {
       <WebView 
         source={{ uri }} 
         style={styles.webview}
-        onLoadStart={() => console.log('Loading...')}
-        onLoadEnd={() => console.log('Finished loading')}
         onError={(error) => console.error('Error loading:', error.nativeEvent)}
       />
     </View>

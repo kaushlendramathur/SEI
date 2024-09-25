@@ -2,17 +2,29 @@ import React from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { useCourseStore } from '@/store/useCorseStore';
 import { useRouter } from 'expo-router';
+import { setAllCoursesByCart } from '@/api/setAllCoursesByCart';
 
 export default function Cart() {
   const router = useRouter();
   const { selectedCourses } = useCourseStore();
+  
+  const handleApply = async () => {
+    try {
+      const filteredCourses = selectedCourses.map(({ courseName, Id, ...course }) => course);
+      const response = await setAllCoursesByCart({ carts: filteredCourses });
+      router.push('/courses/form');
+    } catch (error) {
+      console.error('Error applying courses:', error);
+    }
+  };
+  
 
   // Calculate total fees and format it as a string
   const totalFees = selectedCourses.reduce((total, course) => total + Number(course.CourseFee), 0).toString();
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.coursesButton} onPress={() => { router.push('/courses/myCart/form'); }}>
+      <Pressable style={styles.coursesButton} onPress={() => { handleApply() }}>
         <Text style={styles.buttonText}>Apply</Text>
       </Pressable>
       <View style={styles.totalContainer}>

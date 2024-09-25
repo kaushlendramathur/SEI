@@ -1,4 +1,4 @@
-const apiBaseURL = process.env.EXPO_PUBLIC_API_URL? process.env.EXPO_PUBLIC_API_URL: "http://seiedutrust-001-site2.gtempurl.com"
+export const apiBaseURL = process.env.EXPO_PUBLIC_API_URL? process.env.EXPO_PUBLIC_API_URL: "https://www.seiedutrust.com"
 
 export const facultyMembersURL = `${apiBaseURL}/Home/GetAllFacultyMembers/`
 
@@ -15,3 +15,7 @@ export const myCoursesFormsURL = `${apiBaseURL}/Home/getFormDetailsStudentByDevi
 export const myCoursesFormDetailURLS = `${apiBaseURL}/Home/ShowAdmissionFormDetailsByDevice/`
 
 export const contactURL = `${apiBaseURL}/Home/SendContactInfo/`
+
+export const coursesURL = `${apiBaseURL}/Home/GetAllCourseDetail/`
+
+export const setAllCoursesByCartURL = `${apiBaseURL}/Home/setAllCourseForCartByDevice/`

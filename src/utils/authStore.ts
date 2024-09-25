@@ -27,7 +27,8 @@ export const saveToken = async (token: string): Promise<void> => {
 };
   
 export const getToken = async (): Promise<Token> => {
-    return await SecureStore.getItemAsync('token');
+    const token = SecureStore.getItemAsync('token');
+    return token;
 };
 
 export const clearCredentials = async (): Promise<void> => {

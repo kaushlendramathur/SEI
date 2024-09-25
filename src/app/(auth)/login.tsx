@@ -61,7 +61,7 @@ const Login = () => {
     } catch (error) {
       setStatus('error')
       setErrorMessage('An error occurred during login')
-      console.log(error)
+      console.error(error)
     }
   }
 

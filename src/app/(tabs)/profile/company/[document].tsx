@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import {useLocalSearchParams } from 'expo-router';
 import PdfViewer from '@/components/PdfViewer';
 
 const DocumentViewer = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pressable, Text, View, StyleSheet } from 'react-native';
 import { CartCourse } from '@/types/courses/cartCourse';
 import { useCourseStore } from '@/store/useCorseStore'; // Update the path as needed
@@ -6,18 +6,21 @@ import { useCourseStore } from '@/store/useCorseStore'; // Update the path as ne
 const DateBox = ({
   CourseScheduleDetails,
   courseName,
+  CourseId,
+  courseIndexMap,
 }: {
   CourseScheduleDetails: any[];
   courseName: string;
+  CourseId: number;
+  courseIndexMap: Map<number, number>;
 }) => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(-1);
-  const addCourse = useCourseStore((state:any) => state.addCourse);
-  const removeCourse = useCourseStore((state:any) => state.removeCourse);
-
+  const {addCourse, removeCourse, findCourse} = useCourseStore();
   const handleSelectDate = (index: number, details: any) => {
     if (index !== selectedButtonIndex) {
       setSelectedButtonIndex(index);
       addCourse({
+        Id: details.Id,
         CourseID: details.CourseID,
         courseName: courseName,
         CourseDate: details.CourseDate,
@@ -32,6 +35,13 @@ const DateBox = ({
       removeCourse(details.CourseID);
     }
   };
+
+  useEffect(() => {
+    const Id = courseIndexMap.get(CourseId);
+    if(Id !== undefined){
+      setSelectedButtonIndex(Id);
+    }
+  }, []);
 
   return (
     <View>

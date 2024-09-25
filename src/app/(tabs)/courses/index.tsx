@@ -1,22 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function App() {
   const router = useRouter();
-
   const handleLocationSelect = (location: string) => {
-
-    router.push(`/courses/myCart`);
+    router.push(`/courses/Course/${location}`);
   };
+
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Select Your Location</Text>
-      <Pressable style={styles.button} onPress={() => handleLocationSelect('faridabad')}>
+      <Pressable style={styles.button} onPress={() => handleLocationSelect('2')}>
         <Text style={styles.buttonText}>Faridabad</Text>
       </Pressable>
-      <Pressable style={styles.button} onPress={() => handleLocationSelect('kolkata')}>
+      <Pressable style={styles.button} onPress={() => handleLocationSelect('1')}>
         <Text style={styles.buttonText}>Kolkata</Text>
       </Pressable>
     </View>
