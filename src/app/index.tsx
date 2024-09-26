@@ -13,6 +13,7 @@ import { getCredentials } from '@/utils/authStore'
 
 import BackgroundImage from '@/assets/images/mainpage.png'
 import ClippedRectangle from '@/assets/images/mainpage2.png'
+import { refreshToken } from '@/utils/refreshToken'
 
 const { width, height } = Dimensions.get('window')
 
@@ -22,6 +23,7 @@ export default function App() {
       const credential = await getCredentials();
       if (credential) {
         router.navigate('/home')
+        refreshToken()
       }
     }
     loadCredentials()

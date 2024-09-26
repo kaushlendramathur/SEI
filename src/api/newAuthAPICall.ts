@@ -14,11 +14,12 @@ export const newsAuthApiCall = async (endpoints: string, body: object) => {
             headers: myHeaders
          }
         );
+        
         if (!response.ok) {
             const token  = await refreshToken();
             return newsApiCall(endpoints, {...body, _authtoken: token})
         }
-        const data = await response.json();
+        const data = await response.json()
         return data;
     } catch (err) {
         console.error(err);

@@ -8,7 +8,7 @@ interface AuthState {
 
 const auth: AuthState = {
   signIn: async (authToken) => {
-    console.log('Login successful:');
+    console.log ('Login successful:');
     await saveToken(authToken);
   },
   signOut: async () => {

@@ -21,8 +21,8 @@ export const navigationOptions: NavigationOption[] = [
   { name: 'Gallery', displayName: 'Gallery', icon: GalleryIcon },
   { name: 'Career', displayName: 'Career', icon: CareerIcon },
   { name: 'Contact', displayName: 'Contact Us', icon: ContactIcon },
-  { name: 'Terms', displayName: 'TERMS AND CONDITIONS', icon: TermsIcon },
-  { name: 'Refund', displayName: 'REFUND POLICY', icon: RefundIcon },
-  { name: 'Privacy', displayName: 'PRIVACY POLICY', icon: PrivacyIcon },
+  { name: 'company/Terms', displayName: 'TERMS AND CONDITIONS', icon: TermsIcon },
+  { name: 'company/Refund', displayName: 'REFUND POLICY', icon: RefundIcon },
+  { name: 'company/Privacy', displayName: 'PRIVACY POLICY', icon: PrivacyIcon },
   { name: 'Logout', displayName: 'Log Out', icon: LogoutIcon },
 ];

@@ -14,9 +14,12 @@ export default function Layout() {
         <Stack.Screen name='Contact'/>
         <Stack.Screen name='Gallery'  />
         <Stack.Screen name='Logout' />
-        <Stack.Screen name='Terms' />
-        <Stack.Screen name='Privacy'  />
-        <Stack.Screen name='Refund'  />
+        <Stack.Screen 
+        name='company/[document]' 
+        options={({ route }) => ({
+          title: route.params?.document ? ` ${route.params?.document}` : 'Document',
+        })}
+      />
       </Stack>
   );
 }

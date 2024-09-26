@@ -5,9 +5,9 @@ export type ScreenNames =
   | 'Gallery'
   | 'Career'
   | 'Contact'
-  | 'Terms'
-  | 'Refund'
-  | 'Privacy'
+  | 'company/Terms'
+  | 'company/Refund'
+  | 'company/Privacy'
   | 'Logout';
 
 export interface NavigationProp {
