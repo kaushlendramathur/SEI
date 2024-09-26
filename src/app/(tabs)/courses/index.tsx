@@ -1,13 +1,16 @@
 import React, {useEffect} from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useCourseStore } from '@/store/useCorseStore';
 
 export default function App() {
   const router = useRouter();
-  const handleLocationSelect = (location: string) => {
+  const { resetSelectedCourses } = useCourseStore();
+  const handleLocationSelect = async (location: string) => {
+    await resetSelectedCourses(); // Await if it's asynchronous
     router.push(`/courses/Course/${location}`);
   };
-
+  
 
   return (
     <View style={styles.container}>

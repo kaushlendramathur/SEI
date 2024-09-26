@@ -1,46 +1,46 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { ScrollView, StyleSheet, View, Text, Pressable, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, View, Text, Pressable } from 'react-native';
 import Course from '@/components/courses/Course';
 import { useGetCourses } from '@/store/useGetCourses';
 import SkeletonLoader from '@/components/team/SkeletonLoader';
-import { useCourseStore } from '@/store/useCorseStore';
 
 export default function AddCourse() {
   const router = useRouter();
-  const { data, execute, loading } = useGetCourses();
-  const {courseIndexMap} = useCourseStore();
+  const { data, loading } = useGetCourses();
 
   const params = useLocalSearchParams(); // Fetch all query params
   const locationString = Array.isArray(params.location)
     ? params.location[0]
     : params.location || '';
+  const location = Number(locationString);
 
-  useEffect(() => {
-    if(locationString) {
-      execute(locationString);
-    }
-  }, [locationString, execute]);
-  
+  // Filter courses based on location and condition
+  const filteredCourses = data[location - 1]?.filter(
+    (course) => course.CourseScheduleDetails && course.CourseScheduleDetails.length > 0
+  ) || [];
+
+  // Function to render each course item
+  const renderCourseItem = ({ item, index }: { item: any; index: number }) => (
+    <Course key={index} course={item} location={locationString} index={index} />
+  );
+
   return (
     <View style={styles.container}>
       <Pressable style={styles.coursesButton} onPress={() => router.push('/courses/cart')}>
         <Text style={styles.buttonText}>Apply Courses</Text>
       </Pressable>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {loading ? (
-          <SkeletonLoader />
-        ) : (
-          data
-            ?.filter(course => course.CourseScheduleDetails && course.CourseScheduleDetails.length > 0)
-            .map((course, index) => (
-              <Course key={index} course={course} location = {locationString} courseIndexMap ={courseIndexMap} />
-            ))
-        )}
-        {!loading && data?.length === 0 && (
-          <Text style={styles.noCoursesText}>No courses available.</Text>
-        )}
-      </ScrollView>
+      {loading[location - 1] ? (
+        <SkeletonLoader />
+      ) : (
+        <FlatList
+          data={filteredCourses}
+          renderItem={renderCourseItem}
+          keyExtractor={(_, index) => index.toString()}
+          ListEmptyComponent={<Text style={styles.noCoursesText}>No courses available.</Text>}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 }

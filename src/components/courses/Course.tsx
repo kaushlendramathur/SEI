@@ -3,16 +3,15 @@ import { ImageBackground, Text, View, StyleSheet } from 'react-native'
 import { ImageSourcePropType } from 'react-native'
 import Spoiler from './Spoiler'
 import DateBox from './DateBox'
-import { CartCourse } from '@/types/courses/cartCourse'
 
 // Define the type for the course prop (adjust according to your data structure)
 type CourseProps = {
+  index : number;
   course: any;
   location: string;
-  courseIndexMap: Map<number, number>;
 };
 
-const Course = ({ course, location, courseIndexMap }: CourseProps) => {
+const Course = ({index, course, location }: CourseProps) => {
   
 
   return (
@@ -34,7 +33,7 @@ const Course = ({ course, location, courseIndexMap }: CourseProps) => {
         <Text style={styles.header}>{course.Name}</Text>
         <Spoiler description={course.DocumentsRequired} label="Documents Required" />
         <Spoiler description={course.Eligibilty} label="Eligibility" />
-        <DateBox CourseScheduleDetails={course.CourseScheduleDetails} courseName={course.Name} CourseId = {course.ID} courseIndexMap ={courseIndexMap}/>
+        <DateBox CourseScheduleDetails={course.CourseScheduleDetails} courseName={course.Name} CourseId = {course.ID} courseKey = {index}/>
       </View>
     </View>
   )

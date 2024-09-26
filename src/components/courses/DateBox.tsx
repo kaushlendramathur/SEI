@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Pressable, Text, View, StyleSheet } from 'react-native';
-import { CartCourse } from '@/types/courses/cartCourse';
+import React from 'react';
+import { Pressable, Text, View, StyleSheet, FlatList } from 'react-native';
 import { useCourseStore } from '@/store/useCorseStore'; // Update the path as needed
 
 const DateBox = ({
   CourseScheduleDetails,
   courseName,
   CourseId,
-  courseIndexMap,
+  courseKey,
 }: {
   CourseScheduleDetails: any[];
   courseName: string;
   CourseId: number;
-  courseIndexMap: Map<number, number>;
+  courseKey: number;
 }) => {
-  const [selectedButtonIndex, setSelectedButtonIndex] = useState(-1);
-  const {addCourse, removeCourse, findCourse} = useCourseStore();
-  const handleSelectDate = (index: number, details: any) => {
-    if (index !== selectedButtonIndex) {
-      setSelectedButtonIndex(index);
+  const { addCourse, removeCourse, setSelectedCoursesIndex, selectedCoursesIndex } = useCourseStore();
+
+  const handleSelectDate = (index: number, details: any, type: number) => {
+    if (type === 1) {
+      setSelectedCoursesIndex(courseKey, index, 1);
       addCourse({
         Id: details.Id,
         CourseID: details.CourseID,
@@ -31,32 +30,43 @@ const DateBox = ({
         isPreviousStudent: details.isPreviousStudent,
       });
     } else {
-      setSelectedButtonIndex(-1);
+      setSelectedCoursesIndex(courseKey, index, 0);
       removeCourse(details.CourseID);
     }
   };
 
-  useEffect(() => {
-    const Id = courseIndexMap.get(CourseId);
-    if(Id !== undefined){
-      setSelectedButtonIndex(Id);
-    }
-  }, []);
+  // Render each date item
+  const renderDateItem = ({ item, index }: { item: any; index: number }) => {
+    const isSelected =
+      selectedCoursesIndex?.[courseKey] && selectedCoursesIndex?.[courseKey]?.[index] === 1;
+
+    return (
+      <Pressable
+        style={[styles.dateBox, isSelected && styles.selectedButton]}
+        onPress={() =>
+          handleSelectDate(index, item, isSelected ? 0 : 1)
+        }
+      >
+        <Text style={isSelected ? { color: 'white' } : {}}>{item.CourseDate}</Text>
+      </Pressable>
+    );
+  };
 
   return (
     <View>
-      <Text style={[styles.font16, { paddingVertical: 5 }]}>Select a Date to Add your Course to Cart</Text>
-      <View style={styles.dateContainer}>
-        {CourseScheduleDetails.map((details, index) => (
-          <Pressable
-            key={index}
-            style={[styles.dateBox, index === selectedButtonIndex && styles.selectedButton]}
-            onPress={() => handleSelectDate(index, details)}
-          >
-            <Text style={index === selectedButtonIndex ? { color: 'white' } : {}}>{details.CourseDate}</Text>
-          </Pressable>
-        ))}
-      </View>
+      <Text style={[styles.font16, { paddingVertical: 5 }]}>
+        Select a Date to Add your Course to Cart
+      </Text>
+      <FlatList
+        data={CourseScheduleDetails}
+        renderItem={renderDateItem}
+        keyExtractor={(_, index) => index.toString()}
+        horizontal={false}
+        numColumns={3} // Adjust the number of columns as per your design
+        columnWrapperStyle={styles.dateContainer} // Apply styles to each row
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      />
     </View>
   );
 };
@@ -76,7 +86,7 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    justifyContent: 'flex-start', // Ensures items align left
   },
   selectedButton: {
     backgroundColor: 'black',
