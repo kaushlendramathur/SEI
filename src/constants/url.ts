@@ -19,3 +19,5 @@ export const contactURL = `${apiBaseURL}/Home/SendContactInfo/`
 export const coursesURL = `${apiBaseURL}/Home/GetAllCourseDetail/`
 
 export const setAllCoursesByCartURL = `${apiBaseURL}/Home/setAllCourseForCartByDevice/`
+
+export const careerURL = `${apiBaseURL}/Home/SendCareerInfo/`

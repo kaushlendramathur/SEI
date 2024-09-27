@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 
 const HeroSection = () => {
   return (
@@ -11,7 +12,7 @@ const HeroSection = () => {
       <View style={styles.content}>
         <Text style={styles.title}>Welcome to SEI Education Trust</Text>
         <Text style={styles.subHeading}>Offering comprehensive offline courses to prepare you for a career at sea</Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={()=>router.push('courses')}>
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
       </View>

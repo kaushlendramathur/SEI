@@ -9,6 +9,7 @@ const Logout: React.FC<NavigationProp> = ({ navigate }) => {
   const handleLogout = () => {
     auth.signOut();
     router.push('login');
+    router.dismissAll()
   };
 
   return (

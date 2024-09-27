@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { NavigationProp } from '@/types/interfaces'
+import React, { useState } from 'react';
+import { NavigationProp } from '@/types/interfaces';
 import {
   View,
   Text,
@@ -8,52 +8,80 @@ import {
   Linking,
   StyleSheet,
   ScrollView,
-} from 'react-native'
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
+import { postCareer } from '@/api/postCareer';
+import { Picker } from '@react-native-picker/picker';
 
 const Career: React.FC<NavigationProp> = ({ navigate }) => {
-  const [fullName, setFullName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneNo, setPhoneNo] = useState('')
-  const [age, setAge] = useState('')
-  const [experience, setExperience] = useState('')
-  const [applyingFor, setApplyingFor] = useState('')
-  const [previousDesignation, setPreviousDesignation] = useState('')
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNo, setPhoneNo] = useState('');
+  const [age, setAge] = useState('');
+  const [experience, setExperience] = useState('');
+  const [applyingFor, setApplyingFor] = useState('');
+  const [previousDesignation, setPreviousDesignation] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSendMessage = () => {
-    console.log({
-      fullName,
-      email,
-      phoneNo,
-      age,
-      experience,
-      applyingFor,
-      previousDesignation,
-    })
-  }
+  const handleSendMessage = async () => {
+    // Basic validation
+    if (!fullName || !email || !phoneNo || !age || !experience || !applyingFor) {
+      Alert.alert('Error', 'Please fill all required fields.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await postCareer({
+        Name: fullName,
+        Email: email,
+        PhoneNo: phoneNo,
+        Age: age,
+        NoOfYearsofExp: experience,
+        previousDesignation,
+        sendto: applyingFor === 'Kolkata' ? '0' : '1',
+      });
+      Alert.alert('Success', 'Your application has been submitted successfully.');
+      setFullName('');
+      setEmail('');
+      setPhoneNo('');
+      setAge('');
+      setExperience('');
+      setApplyingFor('');
+      setPreviousDesignation('');
+    } catch (error) {
+      Alert.alert('Error', 'There was an error submitting your application. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const options = ['Kolkata', 'Faridabad'];
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.emailText}>
-        Send your resume here{' '}
-        <Text
-          style={styles.emailLink}
-          onPress={() => Linking.openURL('mailto:booking@seiedutrust.com')}
-        >
-          booking@seiedutrust.com
+      <View style={styles.textBox}>
+        <Text style={styles.emailText}>
+          Send your resume in {' '}
+          <Text
+            style={styles.emailLink}
+            onPress={() => Linking.openURL('mailto:booking@seiedutrust.com')}
+          >
+            booking@seiedutrust.com
+          </Text>
+           { ' '}mail 
         </Text>
-      </Text>
 
-      <Text style={styles.subText}>
-        OR Fill up the form below. We will get back to you shortly!
-      </Text>
+        <Text style={styles.subText}>OR</Text>
+        <Text style={styles.subText}>
+          Fill up the form below, We will get back to you shortly!
+        </Text>
+      </View>
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Full Name:</Text>
-        <TextInput
-          style={styles.input}
-          value={fullName}
-          onChangeText={setFullName}
-        />
+        <TextInput style={styles.input} value={fullName} onChangeText={setFullName} />
       </View>
 
       <View style={styles.inputGroup}>
@@ -78,30 +106,12 @@ const Career: React.FC<NavigationProp> = ({ navigate }) => {
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Age:</Text>
-        <TextInput
-          style={styles.input}
-          value={age}
-          onChangeText={setAge}
-          keyboardType='numeric'
-        />
+        <TextInput style={styles.input} value={age} onChangeText={setAge} keyboardType='numeric' />
       </View>
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Experience:</Text>
-        <TextInput
-          style={styles.input}
-          value={experience}
-          onChangeText={setExperience}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Applying For:</Text>
-        <TextInput
-          style={styles.input}
-          value={applyingFor}
-          onChangeText={setApplyingFor}
-        />
+        <TextInput style={styles.input} value={experience} onChangeText={setExperience} />
       </View>
 
       <View style={styles.inputGroup}>
@@ -113,24 +123,42 @@ const Career: React.FC<NavigationProp> = ({ navigate }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSendMessage}>
-        <Text style={styles.buttonText}>Send Message</Text>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Applying For:</Text>
+        <Picker
+          style={styles.input}
+          selectedValue={applyingFor}
+          onValueChange={(itemValue) => setApplyingFor(itemValue)}
+        >
+          {options.map((option) => (
+            <Picker.Item key={option} label={option} value={option} />
+          ))}
+        </Picker>
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleSendMessage} disabled={loading}>
+        {loading ? (
+          <ActivityIndicator color='#fff' />
+        ) : (
+          <Text style={styles.buttonText}>Send Message</Text>
+        )}
       </TouchableOpacity>
     </ScrollView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: 'white',
   },
   emailText: {
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
     marginBottom: 10,
+    marginTop: 10,
   },
   emailLink: {
     color: 'blue',
@@ -139,10 +167,10 @@ const styles = StyleSheet.create({
   subText: {
     fontSize: 14,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   inputGroup: {
-    marginBottom: 15,
+    marginBottom: 20,
   },
   label: {
     fontSize: 14,
@@ -161,11 +189,15 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 5,
     alignItems: 'center',
+    marginTop: 20,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
   },
-})
+  textBox: {
+    marginBottom: 20,
+  },
+});
 
-export default Career
+export default Career;

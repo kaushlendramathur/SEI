@@ -1,49 +1,35 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, View, Dimensions, Text, Pressable } from 'react-native';
+import { FlatList, StyleSheet, View, Dimensions, Image, Text, Pressable } from 'react-native';
 import { images, ImageNames } from '@/utils/importImages';
 import { NavigationProp } from '@/types/interfaces';
-import { MaterialIcons } from '@expo/vector-icons';
 
-const ImageGallery: React.FC<NavigationProp> = ({ navigate }) => {
+const ImageGallery: React.FC<NavigationProp> = () => {
+  const renderItem = ({ item }: { item: ImageNames }) => (
+    <View style={styles.imageWrapper}>
+      <Image source={images[item]} style={styles.image} resizeMode="contain" />
+    </View>
+  );
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-
-      {(Object.keys(images) as ImageNames[]).map((imageName, index) => (
-        <View key={index} style={styles.imageWrapper}>
-          <Image
-            source={images[imageName]}
-            style={styles.image}
-            resizeMode="contain"
-          />
-        </View>
-      ))}
-    </ScrollView>
+    <View style={styles.container}>
+      <FlatList
+        data={Object.keys(images) as ImageNames[]}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item}-${index}`}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10 
+    flex: 1,
+    paddingHorizontal: 10,
   },
-  backButton: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    zIndex: 1, 
-    padding: 10, 
-    borderRadius: 20, 
-    backgroundColor: 'gray', 
-  },
-  arrowIcon: {
-    color: 'white',
-  },
-  title: {
-    color: 'black',
-    fontSize: 24,
-    fontWeight: '600',
-    marginTop: 60, // Adjust margin top to account for the back button
-    marginBottom: 20,
-    textAlign: 'center',
+  contentContainer: {
+    paddingBottom: 20,
   },
   imageWrapper: {
     marginBottom: 20,

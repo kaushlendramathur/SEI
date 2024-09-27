@@ -131,9 +131,6 @@ const Centers: React.FC<NavigationProp> = ({ navigate }) => {
           resizeMode='cover'
           style={styles.centerImage}
         />
-        <MapView style={styles.map} region={cityGps.mapDetails}>
-          <Marker coordinate={cityGps.marker} title='SEI Educational Trust' />
-        </MapView>
       </ScrollView>
     </View>
   )

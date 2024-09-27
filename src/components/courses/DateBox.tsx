@@ -19,6 +19,7 @@ const DateBox = ({
     if (type === 1) {
       setSelectedCoursesIndex(courseKey, index, 1);
       addCourse({
+        CouresKey: courseKey,
         Id: details.Id,
         CourseID: details.CourseID,
         courseName: courseName,
