@@ -1,34 +1,19 @@
 import React from 'react'
-import { ImageBackground, Text, View, StyleSheet } from 'react-native'
-import { ImageSourcePropType } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import Spoiler from './Spoiler'
 import DateBox from './DateBox'
 
-// Define the type for the course prop (adjust according to your data structure)
 type CourseProps = {
   index : number;
-  course: any;
-  location: string;
+  course: any
 };
 
-const Course = ({index, course, location }: CourseProps) => {
-  
-
+const Course = ({index, course}: CourseProps) => {
   return (
     <View style={styles.courseContainer}>
-      <ImageBackground 
-        source={require('@/assets/images/course.png') as ImageSourcePropType} 
-        imageStyle={styles.imageStyle} 
-        style={styles.backgroundImage}
-      >
-        <View style={styles.duration}>
+      <View style={styles.duration}>
           <Text style={styles.white}>{course.DurationofCourse[0]}</Text>
-        </View>
-        <View style={styles.location}>
-          <Text style={styles.font16}>{location=== '1'?"Kolkata":"Faridabad"}</Text>
-        </View>
-      </ImageBackground>
-      
+      </View>
       <View style={styles.textContainer}>
         <Text style={styles.header}>{course.Name}</Text>
         <Spoiler description={course.DocumentsRequired} label="Documents Required" />
@@ -43,13 +28,13 @@ const styles = StyleSheet.create({
   courseContainer: {
     position: 'relative', 
     borderRadius: 20, 
-    marginBottom: 30, 
+    marginBottom: 4, 
     paddingBottom: 10, 
     borderColor: 'rgba(0,0,0,0.4)', 
     borderWidth: 1,
     width: '100%',
-}
-,
+    marginTop:5
+},
   imageStyle: { 
     resizeMode: 'cover', 
     borderTopLeftRadius: 20, 
@@ -62,8 +47,8 @@ const styles = StyleSheet.create({
   duration: { 
     position: 'absolute', 
     right: 15,
-    height: 50, 
-    width: 80, 
+    height: 40, 
+    width: 60, 
     alignItems: 'center', 
     justifyContent: 'center', 
     backgroundColor: '#F1A40E', 
@@ -72,13 +57,13 @@ const styles = StyleSheet.create({
   },
   location: { 
     position: 'absolute', 
-    top: 10, 
-    left: 10, 
+    top: 5, 
+    left: 5, 
     height: 40, 
     width: 100, 
     alignItems: 'center', 
     justifyContent: 'center', 
-    backgroundColor: 'white', 
+    backgroundColor: 'black', 
     borderRadius: 10 
   },
   white: { 
@@ -90,13 +75,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center' 
   },
   header: { 
-    fontWeight: 'bold', 
-    fontSize: 17,
-    marginBottom : 5 
+    fontWeight: '700', 
+    fontSize: 15,
+    marginBottom : 5,
+    marginRight: 70,
+    
   },
   font16: { 
-    fontSize: 16 
+    fontSize: 16,
+    color: 'white'
   },
+  detail:{
+    position: 'relative',
+    height: 40,
+  }
 })
 
 export default Course;

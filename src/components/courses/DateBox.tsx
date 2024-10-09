@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Pressable, Text, View, StyleSheet, FlatList } from 'react-native';
-import { useCourseStore } from '@/store/useCorseStore'; // Update the path as needed
+import { useCourseStore } from '@/store/useCorseStore';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const DateBox = ({
   CourseScheduleDetails,
@@ -14,6 +16,8 @@ const DateBox = ({
   courseKey: number;
 }) => {
   const { addCourse, removeCourse, setSelectedCoursesIndex, selectedCoursesIndex } = useCourseStore();
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
 
   const handleSelectDate = (index: number, details: any, type: number) => {
     if (type === 1) {
@@ -54,21 +58,37 @@ const DateBox = ({
   };
 
   return (
-    <View>
-      <Text style={[styles.font16, { paddingVertical: 5 }]}>
-        Select a Date to Add your Course to Cart
-      </Text>
-      <FlatList
-        data={CourseScheduleDetails}
-        renderItem={renderDateItem}
-        keyExtractor={(_, index) => index.toString()}
-        horizontal={false}
-        numColumns={3} // Adjust the number of columns as per your design
-        columnWrapperStyle={styles.dateContainer} // Apply styles to each row
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-      />
+    <View style={styles.spoilerContainer}>
+      <Pressable
+        style={styles.spoiler}
+        onPress={() => {
+          setIsVisible((prev) => !prev);
+        }}
+      >
+        <FontAwesomeIcon
+          icon={isVisible ? faChevronDown : faChevronRight}
+          style={styles.chevronIcon}
+        />
+        <Text style={styles.font16}>Select a Date to Add your Course to Cart</Text>
+      </Pressable>
+      <View style={styles.elementContainer}>
+        {isVisible &&
+            <View>
+            <FlatList
+              data={CourseScheduleDetails}
+              renderItem={renderDateItem}
+              keyExtractor={(_, index) => index.toString()}
+              horizontal={false}
+              numColumns={3} // Adjust the number of columns as per your design
+              columnWrapperStyle={styles.dateContainer} // Apply styles to each row
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ flexGrow: 1 }}
+            />
+          </View>
+          }
+      </View>
     </View>
+   
   );
 };
 
@@ -87,14 +107,26 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start', // Ensures items align left
+    justifyContent: 'flex-start',
   },
   selectedButton: {
     backgroundColor: 'black',
   },
   font16: {
     fontSize: 16,
-    paddingHorizontal: 5,
+  },
+  spoiler: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  chevronIcon: {
+    marginRight: 10,
+  },
+  spoilerContainer: {
+    paddingVertical: 3,
+  },
+  elementContainer: {
+    paddingVertical: 2,
   },
 });
 

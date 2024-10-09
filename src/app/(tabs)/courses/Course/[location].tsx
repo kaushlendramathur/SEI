@@ -9,27 +9,22 @@ export default function AddCourse() {
   const router = useRouter();
   const { data, loading } = useGetCourses();
 
-  const params = useLocalSearchParams(); // Fetch all query params
+  const params = useLocalSearchParams();
   const locationString = Array.isArray(params.location)
     ? params.location[0]
     : params.location || '';
   const location = Number(locationString);
 
-  // Filter courses based on location and condition
   const filteredCourses = data[location - 1]?.filter(
     (course) => course.CourseScheduleDetails && course.CourseScheduleDetails.length > 0
   ) || [];
 
-  // Function to render each course item
   const renderCourseItem = ({ item, index }: { item: any; index: number }) => (
-    <Course key={index} course={item} location={locationString} index={index} />
+    <Course key={index} course={item} index={index} />
   );
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.coursesButton} onPress={() => router.push('/courses/cart')}>
-        <Text style={styles.buttonText}>Apply Courses</Text>
-      </Pressable>
       {loading[location - 1] ? (
         <SkeletonLoader />
       ) : (
@@ -50,7 +45,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingHorizontal: 20,
-    paddingVertical: 10,
+   
   },
   coursesButton: {
     backgroundColor: 'black',

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useCourseStore } from '@/store/useCorseStore';
@@ -7,14 +7,13 @@ export default function App() {
   const router = useRouter();
   const { resetSelectedCourses } = useCourseStore();
   const handleLocationSelect = async (location: string) => {
-    await resetSelectedCourses(); // Await if it's asynchronous
+    await resetSelectedCourses();
     router.push(`/courses/Course/${location}`);
   };
-  
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Select Your Location</Text>
+      <Text style={styles.header}>Choose Your Campus</Text>
       <Pressable style={styles.button} onPress={() => handleLocationSelect('2')}>
         <Text style={styles.buttonText}>Faridabad</Text>
       </Pressable>
